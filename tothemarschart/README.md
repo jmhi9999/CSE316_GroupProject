@@ -1,70 +1,32 @@
-# Getting Started with Create React App
+ToTheMarsChart
+Project Overview
+ToTheMarsChart is a web application designed to provide users with an intuitive platform for tracking and managing stock market trends, enabling informed investment decisions. Aiming to support users in achieving “to-the-Mars” success in their investments, we focus on delivering essential tools and insights through a streamlined and user-friendly interface, avoiding unnecessary complexity.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Key Features
+Navigation Bar
+A responsive navigation bar allows easy access to core pages, including Home, Trending, Favorites, Search, and User, adapting seamlessly to various screen sizes for enhanced accessibility.
 
-## Available Scripts
+Home Page
+A landing page introducing the platform's core features and value, guiding users seamlessly through our services.
 
-In the project directory, you can run:
+Trending Page
+Utilizing data from the Korea Investment & Securities (KIS) API, this page showcases the top-performing stocks with the highest price increases and trading volumes. By providing intuitive charts and data visualizations, we enable users to grasp current market trends quickly.
 
-### `npm start`
+Favorite Page
+Available exclusively to logged-in users, this personalized page allows users to track their selected stocks, offering an efficient way to monitor favorites in a customized dashboard.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Search Page
+This page offers detailed information on specific stocks, including real-time price updates, price trend graphs, and current value. It also integrates with the favorites feature, enabling streamlined stock management.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+User Page
+A login/signup interface is displayed for non-logged-in users, while logged-in users can manage their profile with options to edit details or log out.
 
-### `npm test`
+Installation and Usage Guide
+This project is bootstrapped with Create React App. To run the application locally, use the following commands:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Run Development Server: npm start - Starts the local development server, accessible at http://localhost:3000.
+Run Tests: npm test - Launches the test runner in interactive mode.
+Build for Production: npm run build - Creates an optimized production build in the build directory.
+Eject Configuration: npm run eject - Exposes configuration files for customization. (Note: This action is irreversible.)
+Additional Information
+For more details, please refer to the Create React App documentation and the React documentation.
