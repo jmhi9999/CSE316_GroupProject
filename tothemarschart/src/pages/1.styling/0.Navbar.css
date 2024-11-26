@@ -1,12 +1,12 @@
 /* 네비게이션 바 */
 .navbar {
+  padding-top: 10px;
   width: 772px;
-  height: 26px;
   left: 126px;
-  top: 61px;
   justify-content: space-between;
   align-items: center;
   margin:auto;
+  margin-top: 10px;
 }
 
 /* 네비게이션 리스트 */
@@ -15,7 +15,7 @@
   list-style: none;
   padding: 0;
   margin: 0;
-  gap: 20px; /* 각 링크 사이 간격 */
+  gap: 50px; /* 각 링크 사이 간격 */
 }
 
 .navbar-item {
@@ -35,4 +35,31 @@
 
 .navbar-item a:hover {
   color: #007bff; /* Hover 시 색상 변경 */
+}
+
+.search-bar {
+  height: 18px;
+  width: 249.48px;
+  display: flex;
+  align-items: center;
+  background-image: url("../../../public/resources/0.NavBar/Rectangle 14.png");
+  background-size: 100% 100%; /* 이미지가 검색창 범위에 딱 맞도록 */
+  padding: 5px 10px;
+  gap: 5px;
+}
+
+.search-field {
+  border: none;
+  background: none;
+  outline: none;
+  font-size: 16px;
+  color: black;
+}
+
+.search-icon {
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: black;
+  font-weight: bold;
 }
