@@ -5,6 +5,7 @@ import Trending from "./2.Trending";
 import MyFavorite from "./3.MyFavorite";
 import Search from "./4.Search";
 import Login from "./5.Login.jsx";
+import SignUp from "./6.SignUp.jsx"
 import "../1.styling/0.Navbar.css";
 
 const Navbar = () => {
@@ -38,6 +39,7 @@ const Navbar = () => {
           <Route path="/myfavorite" element={<MyFavorite />} />
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
     </Router>
