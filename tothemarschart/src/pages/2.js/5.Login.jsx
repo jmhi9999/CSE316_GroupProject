@@ -31,7 +31,7 @@ function Login() {
           src="resources/5.Login/Log in.png"
           alt="Log in"
         />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="input-group">
             <input
               type="email"

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../1.styling/6.SignUp.css";
 
-function Login() {
+function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
@@ -38,7 +38,7 @@ function Login() {
           src="resources/6.SignUp/Register.png"
           alt="Sign Up"
         />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="input-group">
             <input
               type="email"
@@ -89,4 +89,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;
