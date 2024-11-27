@@ -4,7 +4,7 @@ import Home from "./1.Main";
 import Trending from "./2.Trending";
 import MyFavorite from "./3.MyFavorite";
 import Search from "./4.Search";
-import Login from "./5.Login";
+import Login from "./5.Login.jsx";
 import "../1.styling/0.Navbar.css";
 
 const Navbar = () => {
