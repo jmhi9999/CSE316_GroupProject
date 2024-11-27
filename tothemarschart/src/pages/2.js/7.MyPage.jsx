@@ -79,40 +79,59 @@ function MyPage() {
   };
 
   return (
-    <div>
-      <div className="page-wrapper">
-        <div className="container">
-          <h1>User Information</h1>
-          <div className="profile-image">
+    <div className="page-wrapper">
+      <div className="container">
+        <div className="profile-section">
+          <div className="profile-image-container">
             <img
               src="https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png"
-              alt="User Icon"
+              alt="Profile"
+              className="profile-img"
+              onClick={() => handleOpenModal("imageModal")}
             />
+            <button 
+              className="edit-button"
+              disabled={isLoading}
+            >
+              Edit
+            </button>
           </div>
+        </div>
+
+        <div className="buttons-section">
           <button
-            onClick={() => handleOpenModal("imageModal")}
+            className="gradient-button username-button"
+            onClick={() => handleOpenModal("nameModal")}
             disabled={isLoading}
           >
-            {isLoading ? "Loading..." : "Change Image"}
+            Change username
           </button>
-          <div className="info-row">
-          </div>
-          <div className="info-row">
-            <button
-              onClick={() => handleOpenModal("passwordModal")}
-              disabled={isLoading}
-            >
-              {isLoading ? "Loading..." : "Change Password"}
-            </button>
-          </div>
-          <div className="info-row">
-            <button
-              onClick={() => handleOpenModal("nameModal")}
-              disabled={isLoading}
-            >
-              {isLoading ? "Loading..." : "Change Username"}
-            </button>
-          </div>
+
+          <button
+            className="gradient-button password-button"
+            onClick={() => handleOpenModal("passwordModal")}
+            disabled={isLoading}
+          >
+            Change password
+          </button>
+
+          <button
+            className="logout-button"
+          >
+            <img 
+              src="resources/7.MyPage/LogOut.png"
+              alt="Log Out"
+              className="logout-image"
+            />
+          </button>
+
+          <button className="help-button">
+            <img 
+              src="resources/7.MyPage/click here if you have any questions.png"
+              alt="Click here if you have any questions"
+              className="help-image"
+            />
+          </button>
         </div>
       </div>
 

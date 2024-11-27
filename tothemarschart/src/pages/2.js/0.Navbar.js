@@ -31,6 +31,9 @@ const Navbar = () => {
             <li className="navbar-item" >
               <Link to="/login" id="login">Login</Link>
             </li>
+            <li className="navbar-item" >
+              <Link to="/mypage" id="mypage">mypage</Link>
+            </li>
           </ul>
         </nav>
 
@@ -41,7 +44,7 @@ const Navbar = () => {
           <Route path="/search" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
-          <Route path="/mypage" element={<SignUp />} />
+          <Route path="/mypage" element={<MyPage />} />
         </Routes>
       </div>
     </Router>
