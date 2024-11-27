@@ -45,7 +45,7 @@
 .input-group input {
   width: 85%;
   padding: 0.875rem 1rem;
-  border: 0px solid #ddd;
+  border: 1px solid #ddd;
   border-radius: 4px;
   background-color: #f8f9fa;
   font-size: 0.95rem;
