@@ -84,7 +84,7 @@
   object-fit: contain;
 }
 
-.button-group .sign-up {
+.button-group #Login-sign-up {
   width: 50%;
   height: auto;
   margin-bottom: 5rem;

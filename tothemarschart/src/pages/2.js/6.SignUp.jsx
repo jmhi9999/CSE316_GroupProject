@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import "../1.styling/5.Login.css";
 import { useNavigate } from "react-router-dom";
+import "../1.styling/6.SignUp.css";
 
 function Login() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
+    passwordCheck: "",
   });
 
   const handleChange = (e) => {
@@ -17,19 +18,25 @@ function Login() {
     }));
   };
 
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    if (formData.password !== formData.passwordCheck) {
+      alert("Passwords do not match. Please check your password.");
+    } else {
+        alert("Passwords match!")
+    }
+  };
 
-  const handleSignUp = () => {
-    navigate("/signup")
+  const handleSignIn = () => {
+    navigate("/login");
   };
 
   return (
-    <div className="login-container">
-      <div className="login-box">
+    <div className="signup-container">
+      <div className="signup-box">
         <img
-          className="login-text-image"
-          src="resources/5.Login/Log in.png"
-          alt="Log in"
+          className="signup-text-image"
+          src="resources/6.SignUp/Register.png"
+          alt="Sign Up"
         />
         <form onSubmit={handleSubmit}>
           <div className="input-group">
@@ -54,14 +61,25 @@ function Login() {
             />
           </div>
 
+          <div className="input-group">
+            <input
+              type="password"
+              name="passwordCheck"
+              placeholder="Confirm Password"
+              value={formData.passwordCheck}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
           <div className="button-group">
-            <button type="submit" id="Login-sign-in">
-              <img src="resources/5.Login/Sign in.png" alt="Sign In" />
+            <button type="submit" id="SignUp-sign-up">
+              <img src="resources/6.SignUp/SignUp.png" alt="Sign Up" />
             </button>
-            <button type="button" id="Login-sign-up" onClick={handleSignUp}>
+            <button type="button" id="SignUp-sign-in" onClick={handleSignIn}>
               <img
-                src="resources/5.Login/click here to sign up.png"
-                alt="Sign Up"
+                src="resources/6.SignUp/click here to sign in.png"
+                alt="Sign In"
               />
             </button>
           </div>
