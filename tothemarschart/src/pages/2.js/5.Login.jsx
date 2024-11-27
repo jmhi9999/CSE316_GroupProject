@@ -1,7 +1,9 @@
 import React, { useState } from "react";
 import "../1.styling/5.Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -17,7 +19,9 @@ function Login() {
 
   const handleSubmit = (e) => {};
 
-  const handleSignUp = () => {};
+  const handleSignUp = () => {
+    navigate("/signup")
+  };
 
   return (
     <div className="login-container">
@@ -27,7 +31,7 @@ function Login() {
           src="resources/5.Login/Log in.png"
           alt="Log in"
         />
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} autoComplete="off">
           <div className="input-group">
             <input
               type="email"
@@ -51,10 +55,10 @@ function Login() {
           </div>
 
           <div className="button-group">
-            <button type="submit" className="sign-in">
+            <button type="submit" id="Login-sign-in">
               <img src="resources/5.Login/Sign in.png" alt="Sign In" />
             </button>
-            <button type="button" className="sign-up" onClick={handleSignUp}>
+            <button type="button" id="Login-sign-up" onClick={handleSignUp}>
               <img
                 src="resources/5.Login/click here to sign up.png"
                 alt="Sign Up"

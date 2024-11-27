@@ -1,113 +1,111 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 90vh;
-    background-color: white;
-  }
-  
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+  background-color: white;
+}
+
+.login-box {
+  background-color: white;
+  padding: 2.5rem 2rem;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 360px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.login-box .login-text-image {
+  width: 90px;
+  height: auto;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  object-fit: contain;
+}
+
+.login-box form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.input-group {
+  margin-bottom: 0.5rem;
+  display: flex;          
+  flex-direction: column; 
+  align-items: center;   
+  width: 100%;
+}
+
+.input-group input {
+  width: 85%;
+  padding: 0.875rem 1rem;
+  border: 0px solid #ddd;
+  border-radius: 4px;
+  background-color: #f8f9fa;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  background-image: url("../../../public/resources/5.Login/Rectangle 5.png");
+  background-size: 100% 100%;
+}
+
+.input-group input:focus {
+  outline: none;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column; 
+  align-items: center;
+  gap: 1rem;
+  width: 85%;
+  margin: 0.5rem auto;
+}
+
+.button-group button {
+  background: none;
+  border: none;
+  padding: .5rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  width: 100%;
+}
+
+.button-group button img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+}
+
+.button-group #Login-sign-up {
+  width: 50%;
+  height: auto;
+  margin-bottom: 5rem;
+}
+
+.button-group button:hover {
+  transform: translateY(-2px);
+}
+
+.button-group button:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
   .login-box {
-    background-color: white;
-    padding: 2.5rem 2rem;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 360px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 2rem;
+    padding: 2rem 1.5rem;
+    margin: 0 1rem;
+    max-width: 320px;
   }
-  
-  .login-box .login-text-image {
-    width: 90px;
-    height: auto;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
-    object-fit: contain;
-  }
-  
-  .login-box form {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-  }
-  
-  .input-group {
-    margin-bottom: 0.5rem;
-    display: flex;          
-    flex-direction: column; 
-    align-items: center;   
-    width: 100%;
-  }
-  
-  .input-group input {
-    width: 85%;
-    padding: 0.875rem 1rem;
-    border: 0px solid #ddd;
-    border-radius: 4px;
-    background-color: #f8f9fa;
-    font-size: 0.95rem;
-    transition: all 0.3s ease;
-    background-image: url("../../../public/resources/5.Login/Rectangle 5.png");
-    background-size: 100% 100%;
-  }
-  
-  .input-group input:focus {
-    outline: none;
-    transform: translateY(-1px);
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-  }
-  
-  .button-group {
-    display: flex;
-    flex-direction: column; /* 버튼을 세로로 배치 */
-    align-items: center;
-    gap: 1rem;
-    width: 85%;
-    margin: 0.5rem auto;
-  }
-  
-  .button-group button {
-    background: none;
-    border: none;
-    padding: .5rem;
-    cursor: pointer;
-    transition: transform 0.2s ease;
-    width: 100%;
-  }
-  
+
   .button-group button img {
-    width: 100%;
-    height: auto;
-    object-fit: contain;
+    width: 90%;
   }
-  
-  .button-group .sign-up {
-    width: 50%;
-    height: auto;
-    margin-bottom: 5rem;
-  }
-  
-  .button-group button:hover {
-    transform: translateY(-2px);
-  }
-  
-  .button-group button:active {
-    transform: translateY(0);
-  }
-  
-  /* 모바일 반응형 */
-  @media (max-width: 480px) {
-    .login-box {
-      padding: 2rem 1.5rem;
-      margin: 0 1rem;
-      max-width: 320px;
-    }
-  
-    .button-group button img {
-      width: 90%;
-    }
-  }
-  
+}
