@@ -43,7 +43,7 @@
   display: flex;
   align-items: center;
   background-image: url("../../../public/resources/0.NavBar/Rectangle 14.png");
-  background-size: 100% 100%; /* 이미지가 검색창 범위에 딱 맞도록 */
+  background-size: 100% 100%; 
   padding: 5px 10px;
   gap: 5px;
 }
@@ -62,4 +62,15 @@
   cursor: pointer;
   color: black;
   font-weight: bold;
+}
+
+.navbar-item span {
+  padding: 10px;
+  font-weight: 500;
+}
+
+.navbar-list {
+  display: flex;
+  align-items: center;
+  gap: 30px;
 }

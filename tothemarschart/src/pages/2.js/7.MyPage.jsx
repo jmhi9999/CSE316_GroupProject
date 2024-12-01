@@ -1,6 +1,17 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import "../1.styling/7.MyPage.css";
+import axios from "axios";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateUsername,
+  updateProfileImage,
+  setUser as setReduxUser,
+  logout  as reduxLogout
+} from "../../redux/userSlice";
+import { CLOUDINARY_CONFIG } from "../../config/cloudinary.js";
+import { useAuth } from "../../session/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { hashutil } from "./8.Hashutil";
 
 const Modal = ({ isOpen, onClose, title, children }) => {
   if (!isOpen) return null;
@@ -26,7 +37,30 @@ function MyPage() {
   const [isLoading, setIsLoading] = useState(false);
   const fileInputRef = useRef(null);
 
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { user: authUser, checkAuth, logout: sessionLogout } = useAuth();
+  axios.defaults.baseURL = "http://localhost:3001";
+
+  const reduxEmail = useSelector((state) => state.user.email);
+  const reduxUsername = useSelector((state) => state.user.username);
+  const reduxProfileImage = useSelector((state) => state.user.profileImage);
+
+  const userEmail = authUser?.email || reduxEmail;
+  const currentUsername = authUser?.username || reduxUsername;
+
+  useEffect(() => {
+    if (authUser?.profileImage) {
+      setCurrentProfileImage(authUser.profileImage);
+      dispatch(updateProfileImage(authUser.profileImage));
+    }
+  }, [authUser, dispatch]);
+
+  const [currentProfileImage, setCurrentProfileImage] = useState(
+    authUser?.profileImage ||
+      reduxProfileImage ||
+      "https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png"
+  );
 
   const handleOpenModal = (modalId) => {
     setOpenModal(modalId);
@@ -49,21 +83,100 @@ function MyPage() {
       return;
     }
 
-    alert("Username changed!");
-    handleCloseModal();
-    navigate(0);
+    if (!userEmail) {
+      alert("User email is not available. Please log in again.");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      console.log("Updating username:", { username, userEmail });
+      const response = await axios.post(
+        "/updateUsername",
+        {
+          username: username,
+          EmailAddress: userEmail,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        dispatch(updateUsername(username));
+
+        if (authUser?.updateAuthUser) {
+          await authUser.updateAuthUser({ username: username });
+        }
+
+        const authResponse = await axios.get("/check-auth", {
+          withCredentials: true,
+        });
+        if (authResponse.data.isAuthenticated) {
+          dispatch(setReduxUser(authResponse.data.user));
+        }
+
+        alert("Username updated successfully!");
+        handleCloseModal();
+        setUsername("");
+      } else {
+        throw new Error(response.data.message || "Failed to update username");
+      }
+    } catch (error) {
+      console.error("Error updating username:", error);
+      alert(error.response?.data?.message || "Error updating username");
+    } finally {
+      setIsLoading(false);
+      navigate(0);
+    }
   };
 
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
-    if (!password.trim()) {
-      alert("Password cannot be empty");
+
+    if (password.length < 8) {
+      alert("Password must be at least 8 characters long");
       return;
     }
 
-    alert("Password changed!");
-    handleCloseModal();
-    navigate(0);
+    if (!userEmail) {
+      alert("User email is not available");
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      const hashedOldPassword = hashutil(userEmail, oldPassword);
+      const hashedNewPassword = hashutil(userEmail, password);
+
+      const response = await axios.post(
+        "/updatePassword",
+        {
+          EmailAddress: userEmail,
+          oldPassword: hashedOldPassword, 
+          newPassword: hashedNewPassword,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        await checkAuth();
+        setPassword("");
+        setOldPassword("");
+        alert("Password updated successfully!");
+        handleCloseModal();
+      } else {
+        throw new Error(response.data.message || "Failed to update password");
+      }
+    } catch (error) {
+      console.error("Error updating password:", error);
+      alert(error.response?.data?.message || "Error updating password");
+    } finally {
+      setIsLoading(false);
+      navigate(0);
+    }
   };
 
   const handleProfileImageUpdate = async (e) => {
@@ -73,10 +186,88 @@ function MyPage() {
       alert("Please select an image");
       return;
     }
-    alert("Profile image changed!");
-    handleCloseModal();
-    navigate(0);
+
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", CLOUDINARY_CONFIG.upload_preset);
+      formData.append("api_key", CLOUDINARY_CONFIG.api_key);
+      formData.append("timestamp", (Date.now() / 1000) | 0);
+
+      const cloudinaryResponse = await axios.post(
+        "https://api.cloudinary.com/v1_1/dwp2p4j4c/image/upload",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+          withCredentials: false,
+        }
+      );
+
+      if (!cloudinaryResponse.data.secure_url) {
+        throw new Error("Failed to upload image to Cloudinary");
+      }
+
+      const imageUrl = cloudinaryResponse.data.secure_url;
+
+      const response = await axios.post(
+        "/updateProfileImage",
+        {
+          EmailAddress: userEmail,
+          profileImage: imageUrl,
+        },
+        {
+          withCredentials: true,
+        }
+      );
+
+      if (response.data.success) {
+        dispatch(updateProfileImage(imageUrl));
+        if (authUser?.updateAuthUser) {
+          await authUser.updateAuthUser({ profileImage: imageUrl });
+        }
+        await checkAuth();
+        setCurrentProfileImage(imageUrl);
+        alert("Profile image updated successfully!");
+        handleCloseModal();
+      } else {
+        throw new Error(
+          response.data.message || "Failed to update profile image"
+        );
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      alert(
+        error.response?.data?.message ||
+          "Error updating profile image. Please try again."
+      );
+    } finally {
+      setIsLoading(false);
+      navigate(0);
+    }
   };
+
+  const handleSignOut = async () => {
+    try {
+      const result = await sessionLogout();
+      if(result.success) {
+        dispatch(reduxLogout());
+          navigate("/");
+          alert("Sucessfully Logged Out!");
+      } else {
+        console.error("Logout failed:", result.message);
+          alert("Logout failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+      alert("Error during logout. Please try again.");
+    }
+  } 
+
+  if (!authUser) {
+    navigate("/login");
+    return null;
+  }
 
   return (
     <div className="page-wrapper">
@@ -84,15 +275,16 @@ function MyPage() {
         <div className="profile-section">
           <div className="profile-image-container">
             <img
-              src="https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png"
-              alt="Profile"
+              src={currentProfileImage}
+              alt="User Icon"
+              onError={(e) => {
+                e.target.src =
+                  "https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png";
+              }}
               className="profile-img"
               onClick={() => handleOpenModal("imageModal")}
             />
-            <button 
-              className="edit-button"
-              disabled={isLoading}
-            >
+            <button className="edit-button" disabled={isLoading}>
               Edit
             </button>
           </div>
@@ -115,19 +307,18 @@ function MyPage() {
             Change password
           </button>
 
-          <button
-            className="logout-button"
-          >
-            <img 
+          <button className="logout-button">
+            <img
               src="resources/7.MyPage/LogOut.png"
               alt="Log Out"
               className="logout-image"
+              onClick={handleSignOut}
             />
           </button>
 
           <button className="help-button">
-            <img 
-              src="resources/7.MyPage/click here if you have any questions.png"
+            <img
+              src="resources/7.MyPage/clickHereIfYouHaveAnyQuestions.png"
               alt="Click here if you have any questions"
               className="help-image"
             />
