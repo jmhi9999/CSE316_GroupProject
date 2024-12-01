@@ -1,0 +1,93 @@
+.trending-container {
+  display: flex;
+  gap: 20px;
+  padding: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.trending-section {
+  flex: 1;
+  padding: 20px;
+  border-radius: 20px;
+  position: relative;
+  min-height: 600px;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.increasing-section {
+  background-image: url("../../../public/resources/2.Trending/Increasing.png");
+}
+
+.transaction-section {
+  background-image: url("../../../public/resources/2.Trending/transaction.png");
+}
+
+.ticker-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ticker-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 12px 16px;
+  border-radius: 12px;
+  transition: transform 0.2s;
+}
+
+.ticker-item:hover {
+  transform: translateY(-2px);
+}
+
+.ticker-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ticker-number {
+  font-size: 16px;
+  font-weight: bold;
+  color: #4a5568;
+}
+
+.ticker-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+}
+
+.ticker-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.ticker-name {
+  font-weight: 600;
+  color: #1a202c;
+}
+
+.ticker-description {
+  font-size: 14px;
+  color: #718096;
+}
+
+.ticker-right {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.positive {
+  color: #10B981;
+}
+
+.negative {
+  color: #EF4444;
+}
