@@ -11,3 +11,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  max-width: 2560px;
+  width: 100vw; /* viewport 너비 */
+  height: 100vh; /* viewport 높이 */
+}

@@ -2,8 +2,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: 90vh;
+    min-height: 50vh;
     background-color: white;
+    margin-top: 3rem;
   }
   
   .signup-box {
@@ -17,6 +18,7 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    margin-top: 2rem;
   }
   
   .signup-box .signup-text-image {
