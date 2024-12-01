@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { hashutil } from './8.Hashutil';
 import "../1.styling/6.SignUp.css";
 
 function SignUp() {
@@ -8,6 +10,7 @@ function SignUp() {
     email: "",
     password: "",
     passwordCheck: "",
+    username: ''
   });
 
   const handleChange = (e) => {
@@ -18,17 +21,37 @@ function SignUp() {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
     if (formData.password !== formData.passwordCheck) {
-      alert("Passwords do not match. Please check your password.");
-    } else {
-        alert("Passwords match!")
+      alert("Passwords do not match");
+      return;
+    }
+
+    try {
+      const hashedPassword = hashutil(formData.email, formData.password);
+      const response = await axios.post("/signUp", {
+        email: formData.email,
+        username: formData.username,
+        password: hashedPassword
+      });
+
+      if (response.data.success) {
+        alert("Sign Up successful!");
+        navigate('/Login')
+      } else {
+        alert("Sign Up Failed! " + response.data.error);
+      }
+    } catch (error) {
+      console.error("Sign up error:", error);
+      alert("Sign Up Failed! " + error.response?.data?.error || error.message);
     }
   };
 
   const handleSignIn = () => {
-    navigate("/login");
-  };
+    navigate("/login")
+  }
 
   return (
     <div className="signup-container">
@@ -45,6 +68,17 @@ function SignUp() {
               name="email"
               placeholder="Email"
               value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </div>
+
+          <div className="input-group">
+            <input
+              type="username"
+              name="username"
+              placeholder="Username"
+              value={formData.usernamel}
               onChange={handleChange}
               required
             />
