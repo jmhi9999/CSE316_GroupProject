@@ -28,7 +28,7 @@ function Login() {
       <div className="login-box">
         <img
           className="login-text-image"
-          src="resources/5.Login/Log in.png"
+          src="resources/5.Login/LogIn.png"
           alt="Log in"
         />
         <form onSubmit={handleSubmit} autoComplete="off">
@@ -56,11 +56,11 @@ function Login() {
 
           <div className="button-group">
             <button type="submit" id="Login-sign-in">
-              <img src="resources/5.Login/Sign in.png" alt="Sign In" />
+              <img src="resources/5.Login/SignIn.png" alt="Sign In" />
             </button>
             <button type="button" id="Login-sign-up" onClick={handleSignUp}>
               <img
-                src="resources/5.Login/click here to sign up.png"
+                src="resources/5.Login/clickHereToSignUp.png"
                 alt="Sign Up"
               />
             </button>

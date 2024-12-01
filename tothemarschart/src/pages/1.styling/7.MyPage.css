@@ -84,7 +84,7 @@
     font-size: 0.95rem;
     cursor: pointer;
     transition: all 0.3s ease;
-    background-image: url("../../../public/resources/5.Login/Rectangle 5.png");
+    background-image: url("../../../public/resources/5.Login/Rectangle5.png");
     background-size: 100% 100%;
     border-radius: 17px;
     color: black;
@@ -273,7 +273,7 @@
   }
   
   .modal-buttons .save-button {
-    background-image: url("../../../public/resources/5.Login/Rectangle 5.png");
+    background-image: url("../../../public/resources/5.Login/Rectangle5.png");
     background-size: 100% 100%;
     color: black;
     border-radius: 15px;

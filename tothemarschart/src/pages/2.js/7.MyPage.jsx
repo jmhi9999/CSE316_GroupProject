@@ -127,7 +127,7 @@ function MyPage() {
 
           <button className="help-button">
             <img 
-              src="resources/7.MyPage/click here if you have any questions.png"
+              src="resources/7.MyPage/clickHereIfYouHaveAnyQuestions.png"
               alt="Click here if you have any questions"
               className="help-image"
             />

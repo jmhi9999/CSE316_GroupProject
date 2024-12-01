@@ -78,7 +78,7 @@ function SignUp() {
             </button>
             <button type="button" id="SignUp-sign-in" onClick={handleSignIn}>
               <img
-                src="resources/6.SignUp/click here to sign in.png"
+                src="resources/6.SignUp/clickHereToSignIn.png"
                 alt="Sign In"
               />
             </button>
