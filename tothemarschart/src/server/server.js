@@ -53,15 +53,21 @@ connection.connect((err) => {
 
 // check authorization before loggin in
 app.get("/check-auth", (req, res) => {
-  if (req.session.user) {
-    res.json({
-      isAuthenticated: true,
-      user: req.session.user,
+    console.log('Session check:', {
+      sessionExists: !!req.session,
+      sessionUser: req.session?.user,
+      sessionID: req.sessionID
     });
-  } else {
-    res.json({ isAuthenticated: false });
-  }
-});
+    
+    if (req.session.user) {
+      res.json({
+        isAuthenticated: true,
+        user: req.session.user,
+      });
+    } else {
+      res.json({ isAuthenticated: false });
+    }
+  });
 
 // login route
 app.post("/login", (req, res) => {
@@ -97,6 +103,11 @@ app.post("/login", (req, res) => {
             profileImage: result[0].ProfileImage,
           },
         });
+
+        console.log('Session after login:', {
+            sessionID: req.sessionID,
+            sessionUser: req.session.user
+          });
       } else {
         res.json({
           success: false,
