@@ -1,56 +1,152 @@
-.chart-container {
-    width: 80%;
-    max-width: 1800px;
-    margin: 0 auto;
-    height: 500px;
-    background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  
-  .chart-title {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 20px;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  .chart-wrapper {
-    width: 100%;
-    height: 400px;
+ }
+ 
+ @keyframes fadeIn {
+  from {
+    opacity: 0;
   }
-  
-  .loading-container {
-    width: 100%;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  to {
+    opacity: 1;
   }
-  
-  .error-container {
-    width: 100%;
-    height: 400px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    color: red;
-  }
-  
-  .custom-tooltip {
-    background-color: white;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  .tooltip-price {
-    color: #2563eb;
-    font-weight: bold;
-  }
+ }
+ 
+ .chart-container {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 500px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 30px;
+  margin-top: 60px;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  animation: fadeIn 0.5s ease-out;
+ }
+ 
+ .header-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 30px;
+  animation: slideIn 0.5s ease-out;
+ }
+ 
+ .chart-wrapper {
+  width: 100%;
+  height: 400px;
+  animation: slideIn 0.8s ease-out;
+ }
+ 
+ .company-logo {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+ }
+ 
+ .company-info {
+  flex-grow: 1;
+ }
+ 
+ .company-name {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 5px;
+ }
+ 
+ .star-icon {
+  cursor: pointer;
+  color: #e0e0e0;
+  font-size: 20px;
+ }
+ 
+ .company-description {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.4;
+ }
+ 
+ .price-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+ }
+ 
+ .current-price {
+  font-size: 32px;
+  font-weight: bold;
+  color: #333;
+ }
+ 
+ .price-change {
+  font-size: 16px;
+  color: #ff0000;
+ }
+ 
+ .positive {
+  color: #2563eb;
+ }
+ 
+ .negative {
+  color: #ff0000;
+ }
+ 
+ .refresh-icon {
+  cursor: pointer;
+  color: #666;
+  font-size: 20px;
+ }
+ 
+ .loading-container {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 500px;
+  margin: 60px auto 0;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  animation: fadeIn 0.5s ease-out;
+ }
+ 
+ .error-container {
+  width: 80%;
+  max-width: 1000px;
+  min-width: 500px;
+  margin: 60px auto 0;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 20px;
+  box-shadow: 0 0 15px rgba(0,0,0,0.05);
+  color: red;
+  animation: fadeIn 0.5s ease-out;
+ }
+ 
+ .custom-tooltip {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+ }
+ 
+ .tooltip-price {
+  color: #2563eb;
+  font-weight: bold;
+ }

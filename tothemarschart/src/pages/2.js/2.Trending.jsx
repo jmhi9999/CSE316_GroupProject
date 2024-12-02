@@ -57,9 +57,9 @@ const Trending = () => {
             Increasing <img src="/resources/2.Trending/fire.png" alt="fire" style={{ width: '100px', objectFit: 'contain', verticalAlign: 'middle' }} /> 
           </h1>
           <div className="ticker-list-container">
-            <div className="ticker-list" onClick={() => {navigate('./search')}}>
+            <div className="ticker-list">
               {rateSort.map((ticker, index) => (
-                <div key={ticker.description} className="ticker-item">
+                <div key={ticker.description} className="ticker-item"  onClick={() => navigate(`/search/KRW-${ticker.description}`)}>
                   <div className="ticker-left">
                     <span className="ticker-number">{index + 1}.</span>
                     <img 
@@ -73,7 +73,7 @@ const Trending = () => {
                     />
                     <div className="ticker-info">
                       <span className="ticker-name">{ticker.name}</span>
-                      <span className="ticker-description">{ticker.description}</span>
+                      <span className="ticker-description" onClick={() => navigate(`/search/KRW-${ticker.description}`)}>{ticker.description}</span>
                     </div>
                   </div>
                   <div className="ticker-right">
@@ -97,9 +97,9 @@ const Trending = () => {
             Transaction <img src="/resources/2.Trending/light.png" alt="fire" style={{ width: '100px', objectFit: 'contain', verticalAlign: 'middle', paddingBottom:'5px' }} /> 
           </h1>
           <div className="ticker-list-container">
-            <div className="ticker-list" onClick={() => {navigate('./search')}}>
+            <div className="ticker-list">
               {volumeSort.map((ticker, index) => (
-                <div key={ticker.description} className="ticker-item">
+                <div key={ticker.description} className="ticker-item" onClick={() => navigate(`/search/KRW-${ticker.description}`)}>
                   <div className="ticker-left">
                     <span className="ticker-number">{index + 1}.</span>
                     <img 
@@ -113,7 +113,7 @@ const Trending = () => {
                     />
                     <div className="ticker-info">
                       <span className="ticker-name">{ticker.name}</span>
-                      <span className="ticker-description">{ticker.description}</span>
+                      <span className="ticker-description" onClick={() => navigate(`/search/KRW-${ticker.description}`)}>{ticker.description}</span>
                     </div>
                   <div style={{ flex: '1', textAlign: 'center', paddingLeft: '20px', margin:'auto' }}>{Number(ticker.acc_trade_volume).toLocaleString()} Transaction</div>
                   </div>

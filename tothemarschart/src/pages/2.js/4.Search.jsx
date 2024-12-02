@@ -18,18 +18,31 @@ const Search = () => {
   const [error, setError] = useState(null);
   const location = useLocation();
   
-  // URL에서 market 코드 추출
+  // URL에서 market 코드 추출 - 수정
   const getMarketFromPath = () => {
     const path = location.pathname;
     if (path === '/search') return 'KRW-BTC';
     const market = path.split('/search/')[1];
-    return market || 'KRW-BTC';
+    return market || 'KRW-BTC'; // 기본값 설정
   };
 
   const market = getMarketFromPath();
 
+  // 코인 이름 가져오기 - 수정
+  const getCryptoName = (market) => {
+    const symbol = market.includes('-') ? market.split('-')[1] : market;
+    switch(symbol) {
+      case 'BTC': return 'Bitcoin';
+      case 'ETH': return 'Ethereum';
+      case 'XRP': return 'Ripple';
+      case 'DOGE': return 'Dogecoin';
+      default: return symbol;
+    }
+  };
+
   useEffect(() => {
     const fetchCryptoData = async () => {
+      setIsLoading(true);
       try {
         const response = await fetch(`https://api.upbit.com/v1/candles/days?market=${market}&count=90`);
         if (!response.ok) {
@@ -40,7 +53,8 @@ const Search = () => {
         const formattedData = data
           .map(item => ({
             date: new Date(item.candle_date_time_kst).toLocaleDateString(),
-            price: item.trade_price
+            price: item.trade_price,
+            change: item.change_price
           }))
           .reverse();
 
@@ -80,7 +94,7 @@ const Search = () => {
   if (isLoading) {
     return (
       <div className="loading-container">
-        Loading {market} data...
+        Loading {getCryptoName(market)} data...
       </div>
     );
   }
@@ -93,25 +107,57 @@ const Search = () => {
     );
   }
 
-  const getCryptoName = (marketCode) => {
-    const name = marketCode.split('-')[1];
-    return name || 'Cryptocurrency';
+  // 가격 변동률 계산
+  const calculatePriceChange = () => {
+    if (chartData.length < 2) return 0;
+    const latestPrice = chartData[chartData.length - 1]?.price;
+    const firstPrice = chartData[chartData.length - 2]?.price;
+    if (!latestPrice || !firstPrice) return 0;
+    return ((latestPrice - firstPrice) / firstPrice * 100).toFixed(2);
   };
+
+  const priceChange = calculatePriceChange();
+  const cryptoName = getCryptoName(market);
+  const icon = `https://static.upbit.com/logos/${market.split('-')[1]}.png`;
 
   return (
     <div className="chart-container">
-      <h2 className="chart-title">
-        {getCryptoName(market)} Price Chart (90 Days)
-      </h2>
+      <div className="header-container">
+        <img 
+          src={icon} 
+          alt={`${cryptoName} icon`} 
+          className="company-logo"
+        />
+        <div className="company-info">
+          <div className="company-name">
+            {cryptoName}
+            <span className="star-icon">☆</span>
+          </div>
+          <div className="company-description">
+            {cryptoName} is a cryptocurrency traded on various exchanges.
+          </div>
+        </div>
+        <div className="price-container">
+          <div>
+            <div className="current-price">
+              {formatKRW(chartData[chartData.length - 1]?.price)}
+            </div>
+            <div className={`price-change ${priceChange >= 0 ? 'positive' : 'negative'}`}>
+              {priceChange}%
+            </div>
+          </div>
+          <span className="refresh-icon">⟳</span>
+        </div>
+      </div>
       <div className="chart-wrapper">
-        <ResponsiveContainer>
+        <ResponsiveContainer width="100%" height={400}>
           <LineChart
             data={chartData}
             margin={{
-              top: 10,
+              top: 20,
               right: 30,
               left: 20,
-              bottom: 5,
+              bottom: 10,
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
@@ -123,17 +169,18 @@ const Search = () => {
             <YAxis
               tickFormatter={formatKRW}
               tick={{ fontSize: 12 }}
+              domain={['auto', 'auto']}
             />
             <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Line
               type="monotone"
               dataKey="price"
-              name={`${getCryptoName(market)} Price`}
+              name={`${cryptoName} Price`}
               stroke="#2563eb"
               strokeWidth={2}
               dot={false}
-              activeDot={{ r: 8 }}
+              activeDot={{ r: 6 }}
             />
           </LineChart>
         </ResponsiveContainer>
