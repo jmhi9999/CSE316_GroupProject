@@ -139,6 +139,27 @@ const Home = () => {
               />
             ))}
           </div>
+          <div className= "about-page">
+            <img 
+            src="/resources/1.Main/Square.png" 
+            id="back-image" 
+            alt="back-image" 
+            style={{position:'absolute',   top: '63vw', paddingBottom: '100px'}}
+            className={isBackgroundVisible ? 'show' : ''}  
+            />
+          <img 
+            src="/resources/1.Main/decoImages.png" 
+            id="back-image" 
+            alt="back-image" 
+            style={{
+              top: '60vw', 
+              width: '110%', 
+              left: '-5vw',
+              animation: 'float 6s ease-in-out infinite',
+            }}
+            className={isBackgroundVisible ? 'show' : ''}  
+          />
+          </div>
         </div>
       </section>
     </div>

@@ -93,15 +93,15 @@ box-shadow: 0 0.4vw 1vw rgba(255, 139, 44, 0.3);
   z-index: 2;
 }
 
-.news-container {
-opacity: 0;
-transform: translateY(20px);
-transition: opacity 0.8s ease, transform 0.8s ease;
+.brief-news {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease, transform 0.8s ease;
 }
 
-.news-container.show {
-opacity: 1;
-transform: translateY(0);
+.brief-news.show {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Slider Styles */
@@ -174,4 +174,9 @@ box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 
 .dot.active {
 background: rgb(255, 148, 61);
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-20px); }
 }
