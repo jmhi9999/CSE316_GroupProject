@@ -1,4 +1,3 @@
-// Home.jsx
 import React, { useState, useEffect } from "react";
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import "../1.styling/1.Main.css";
@@ -9,16 +8,44 @@ const Home = () => {
   const [isBackgroundVisible, setIsBackgroundVisible] = useState(false);
   const [showDevelopers, setShowDevelopers] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
-
-  const news = [
-    { id: 1, title: "Hello world", content: "This is text for hello world", image: "https://dimg.donga.com/wps/NEWS/IMAGE/2024/11/27/130511695.1.jpg", url:"" },
-    { id: 2, title: "New News is effect", content: "This is text for hellume popopopo", image: "https://www.blockmedia.co.kr/wp-content/uploads/2024/10/%EB%8F%84%EC%A7%80%EC%BD%94%EC%9D%B8.png", url:""},
-    { id: 3, title: "Popo Get out from here", content: "Trump makes man", image: "https://d2k5miyk6y5zf0.cloudfront.net/article/MYH/20220310/MYH20220310014100641.jpg", url:"" },
-    { id: 4, title: "뉴스 제목 4", content: "뉴스 내용 4", image: "https://img.khan.co.kr/news/2024/11/27/news-p.v1.20241127.176fda76ed174992b73207bdd71e56d2_P1.jpeg", url:"" },
-  ];
+  const [news, setNews] = useState([]);
 
   useEffect(() => {
     setTimeout(() => setIsBackgroundVisible(true), 100);
+  }, []);
+
+  useEffect(() => {
+    const fetchNews = async () => {
+      try {
+        const response = await fetch('https://api-v2.deepsearch.com/v1/global-articles?keyword=FOMC OR 뉴욕증시&api_key=709058f061034926aaac5172f08a5fc3');
+        const data = await response.json();
+        
+        // Transform API data to match our news format
+        const transformedNews = data.data
+          .filter(item => item.image_url || item.thumbnail_url)
+          .map((item, index) => ({
+            id: item.id || index + 1,
+            title: item.title,
+            content: item.summary,
+            image: item.image_url || item.thumbnail_url,
+            url: item.content_url || '#'
+          })); // Filter out items without images
+
+        setNews(transformedNews);
+      } catch (error) {
+        console.error('Error fetching news:', error);
+        // Set fallback news data in case of API failure
+        setNews([{
+          id: 1,
+          title: "Failed to load news",
+          content: "Please try again later",
+          image: "/resources/1.Main/default-news-image.png",
+          url: "#"
+        }]);
+      }
+    };
+
+    fetchNews();
   }, []);
 
   useEffect(() => {
@@ -83,27 +110,25 @@ const Home = () => {
       
       <section id="brief-news">
         <div className={`news-container ${isVisible ? 'show' : ''}`}>
+          <button className="slider-button prev" onClick={prevSlide}>
+            <ChevronLeft size={24} />
+          </button>
           <div className="slider-container">
-            <button className="slider-button prev" onClick={prevSlide}>
-              <ChevronLeft size={24} />
-            </button>
-            
             <div className="slider-content" style={{ transform: `translateX(-${currentSlide * 100}%)` }}>
               {news.map((item) => (
                 <div key={item.id} className="news-box" style={{ position: 'relative' }}>
                   <a href={item.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: 'none' }}>
-                    <h2 style={{zIndex:"2", position:'relative', color: "white", textShadow: "2px 2px 4px rgba(0,0,0,0.5)", left:'20px'}}>{item.title}</h2>
-                    <h3 style={{zIndex:"2", position:'relative', color: "white", textShadow: "2px 2px 4px rgba(0,0,0,0.5)", left:'20px'}}>{item.content}</h3>
-                    <img src={item.image} style={{width:"100%", position: "absolute", top:"0", left:'0'}} />
+                    <h2 style={{zIndex:"2", position:'relative', color: "white", textShadow: "2px 2px 4px rgba(0,0,0,0.5)", left:'20px', right:'20px', padding: '0 20px'}}>{item.title}</h2>
+                    <h3 style={{ zIndex: "2", position: 'relative', color: "white", textShadow: "2px 2px 4px rgba(0,0,0,0.5)", padding: '0 20px', overflow: 'hidden', textOverflow: 'ellipsis', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical' }}>{item.content}</h3>
+                    <img src={item.image} alt="news" style={{width:"100%", position: "absolute", top:"0", left:'0'}} />
                   </a>
                 </div>
               ))}
             </div>
-            
+          </div>
             <button className="slider-button next" onClick={nextSlide}>
               <ChevronRight size={24} />
             </button>
-          </div>
 
           <div className="slider-dots">
             {news.map((_, index) => (
