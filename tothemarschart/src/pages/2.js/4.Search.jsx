@@ -9,15 +9,45 @@ import {
   ResponsiveContainer,
   Legend 
 } from 'recharts';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import {
+  updateFavorites
+} from "../../redux/userSlice";
+import axios from "axios";
 import "../1.styling/4.Search.css";
 
 const Search = () => {
+  axios.defaults.baseURL = "http://localhost:3001";
+  axios.defaults.withCredentials = true;
   const [chartData, setChartData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const location = useLocation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   
+  // Get user's favorites from Redux store
+  const userFavorites = useSelector((state) => state.user.favorites ?? []);
+
+  // 페이지 로드 시 사용자의 favorites 정보 가져오기
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get("/check-auth");
+        if (response.data.isAuthenticated) {
+          const user = response.data.user;
+          if (user && user.favorites) {
+            dispatch(updateFavorites(user.favorites));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+    fetchFavorites();
+  }, [dispatch]);
+
   // URL에서 market 코드 추출 - 수정
   const getMarketFromPath = () => {
     const path = location.pathname;
@@ -27,6 +57,65 @@ const Search = () => {
   };
 
   const market = getMarketFromPath();
+  // Check if current market is in favorites
+  const [isFavorite, setIsFavorite] = useState(userFavorites.includes(market));
+
+  useEffect(() => {
+    // Update isFavorite whenever market or userFavorites changes
+    setIsFavorite(userFavorites.includes(market));
+  }, [market, userFavorites]);
+
+  const handleAddFavorite = async () => {
+    try {
+      // First check authentication status
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        alert("Please Login to add this crypto to your favorites");
+        navigate("/login");
+        return;
+      }
+  
+      const response = await axios.post("/addFavorite", { ticker: market });
+  
+      if (response.data.success) {
+        dispatch(updateFavorites(response.data.favorites));
+        alert("Added to favorites successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+      if (error.response?.status === 401) {
+        navigate("/login");
+      } else {
+        alert(error.response?.data?.message || "Error adding to favorites");
+      }
+    }
+  };
+  
+  const handleDeleteFavorite = async () => {
+    try {
+      // First check authentication status
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        alert("Please Login to add this crypto to your favorites");
+        navigate("/login");
+        return;
+      }
+  
+      const response = await axios.post("/deleteFavorite", { ticker: market });
+  
+      if (response.data.success) {
+        dispatch(updateFavorites(response.data.favorites));
+        alert("Deleted from favorites!");
+      }
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+      if (error.response?.status === 401) {
+        navigate("/login");
+      } else {
+        alert(error.response?.data?.message || "Error removing from favorites");
+      }
+    }
+  };
 
   // 코인 이름 가져오기 - 수정
   const getCryptoName = (market) => {
@@ -131,7 +220,12 @@ const Search = () => {
         <div className="company-info">
           <div className="company-name">
             {cryptoName}
-            <span className="star-icon">☆</span>
+            <span 
+              className={`star-icon ${isFavorite ? 'favorited' : ''}`}
+              onClick={isFavorite ? handleDeleteFavorite : handleAddFavorite}
+            >
+              {isFavorite ? '★' : '☆'}
+            </span>
           </div>
           <div className="company-description">
             {cryptoName} is a cryptocurrency traded on various exchanges.
