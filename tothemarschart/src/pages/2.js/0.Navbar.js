@@ -23,22 +23,23 @@ const SearchForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="search-form">
-      <input 
-        name="search"
-        type="text" 
-        placeholder="Search (e.g. BTC, ETH)" 
-        className="search-field" 
-        style={{display: "flex", width:'250px'}}
-      />
-      <button type="submit" className="search-button">
-        <img 
-          src="/resources/0.Navbar/Vector.png" 
-          alt="Search" 
-          style={{display: "flex", width:"15px"}}
+    <li className="navbar-item search-bar">
+      <form onSubmit={handleSubmit} style={{ display: 'flex', width: '100%', alignItems: 'center' }}>
+        <input 
+          name="search"
+          type="text" 
+          placeholder="Search" 
+          className="search-field"
         />
-      </button>
-    </form>
+        <button type="submit" className="search-icon">
+          <img 
+            src="/resources/0.Navbar/Vector.png" 
+            alt="Search" 
+            style={{width:"15px"}}
+          />
+        </button>
+      </form>
+    </li>
   );
 };
 
@@ -67,9 +68,7 @@ const Navbar = () => {
             <li className="navbar-item">
               <Link to="/myfavorite">My Favorite</Link>
             </li>
-            <li className="navbar-item search-bar">
-              <SearchForm />
-            </li>
+            <SearchForm />
             {!username ? (
               <li className="navbar-item">
                 <Link to="/login" id="login">Login</Link>

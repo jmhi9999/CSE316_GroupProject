@@ -74,3 +74,65 @@
   align-items: center;
   gap: 30px;
 }
+
+/* Chart.css에 추가 */
+.chart-container {
+  width: 80%;
+  max-width: 1800px;
+  margin: 0 auto;
+  height: 500px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.chart-title {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.chart-wrapper {
+  width: 100%;
+  height: 400px;
+}
+
+.loading-container {
+  width: 80%;
+  max-width: 1800px;
+  margin: 0 auto;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.error-container {
+  width: 80%;
+  max-width: 1800px;
+  margin: 0 auto;
+  height: 400px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  color: red;
+}
+
+.custom-tooltip {
+  background-color: white;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.tooltip-price {
+  color: #2563eb;
+  font-weight: bold;
+}
