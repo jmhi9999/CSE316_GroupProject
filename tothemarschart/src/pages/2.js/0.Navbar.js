@@ -1,11 +1,11 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../../session/AuthContext";
+import { useAuth } from "../../session/AuthContext.jsx";
 import { useSelector } from "react-redux";
-import Home from "./1.Main";
-import Trending from "./2.Trending";
-import MyFavorite from "./3.MyFavorite";
-import Search from "./4.Search";
+import Home from "./1.Main.jsx";
+import Trending from "./2.Trending.jsx";
+import MyFavorite from "./3.MyFavorite.jsx";
+import Search from "./4.Search.jsx";
 import Login from "./5.Login.jsx";
 import SignUp from "./6.SignUp.jsx";
 import MyPage from "./7.MyPage.jsx";
@@ -57,7 +57,7 @@ const Navbar = () => {
               <img 
                 src="/resources/0.Navbar/Home.png" 
                 alt="Home" 
-                style={{display: "flex", width:'200px', margin:'auto', padding:'auto'}}
+                style={{display: "flex", width:'300px', margin:'auto', padding:'auto', marginBottom:'20px'}}
               />
             </Link>
           </ul>
