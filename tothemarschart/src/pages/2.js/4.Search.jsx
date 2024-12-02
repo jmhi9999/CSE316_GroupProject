@@ -1,19 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  LineChart, 
-  Line, 
-  XAxis, 
-  YAxis, 
-  CartesianGrid, 
-  Tooltip, 
-  ResponsiveContainer,
-  Legend 
-} from 'recharts';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  updateFavorites
-} from "../../redux/userSlice";
+import { updateFavorites } from "../../redux/userSlice";
 import axios from "axios";
 import "../1.styling/4.Search.css";
 
@@ -210,76 +199,79 @@ const Search = () => {
   const icon = `https://static.upbit.com/logos/${market.split('-')[1]}.png`;
 
   return (
-    <div className="chart-container">
-      <div className="header-container">
-        <img 
-          src={icon} 
-          alt={`${cryptoName} icon`} 
-          className="company-logo"
-        />
-        <div className="company-info">
-          <div className="company-name">
-            {cryptoName}
-            <span 
-              className={`star-icon ${isFavorite ? 'favorited' : ''}`}
-              onClick={isFavorite ? handleDeleteFavorite : handleAddFavorite}
+    <div>
+      <img src = "/resources/4.Search/back-ground.png" alt = "back" style = {{width:'100', position:'absolute', zIndex:'-1'}}/>
+      <div className="chart-container">
+        <div className="header-container">
+          <img 
+            src={icon} 
+            alt={`${cryptoName} icon`} 
+            className="company-logo"
+          />
+          <div className="company-info">
+            <div className="company-name">
+              {cryptoName}
+              <span 
+                className={`star-icon ${isFavorite ? 'favorited' : ''}`}
+                onClick={isFavorite ? handleDeleteFavorite : handleAddFavorite}
+              >
+                {isFavorite ? '★' : '☆'}
+              </span>
+            </div>
+            <div className="company-description">
+              {cryptoName} is a cryptocurrency traded on various exchanges.
+            </div>
+          </div>
+          <div className="price-container">
+            <div>
+              <div className="current-price">
+                {formatKRW(chartData[chartData.length - 1]?.price)}
+              </div>
+              <div className={`price-change ${priceChange >= 0 ? 'positive' : 'negative'}`}>
+                {priceChange}%
+              </div>
+            </div>
+            <span className="refresh-icon">⟳</span>
+          </div>
+        </div>
+        <div className="chart-wrapper">
+          <ResponsiveContainer width="100%" height={400}>
+            <LineChart
+              data={chartData}
+              margin={{
+                top: 20,
+                right: 30,
+                left: 20,
+                bottom: 10,
+              }}
             >
-              {isFavorite ? '★' : '☆'}
-            </span>
-          </div>
-          <div className="company-description">
-            {cryptoName} is a cryptocurrency traded on various exchanges.
-          </div>
-        </div>
-        <div className="price-container">
-          <div>
-            <div className="current-price">
-              {formatKRW(chartData[chartData.length - 1]?.price)}
-            </div>
-            <div className={`price-change ${priceChange >= 0 ? 'positive' : 'negative'}`}>
-              {priceChange}%
-            </div>
-          </div>
-          <span className="refresh-icon">⟳</span>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis 
+                dataKey="date"
+                tick={{ fontSize: 12 }}
+                interval={14}
+              />
+              <YAxis
+                tickFormatter={formatKRW}
+                tick={{ fontSize: 12 }}
+                domain={['auto', 'auto']}
+              />
+              <Tooltip content={<CustomTooltip />} />
+              <Legend />
+              <Line
+                type="monotone"
+                dataKey="price"
+                name={`${cryptoName} Price`}
+                stroke="#2563eb"
+                strokeWidth={2}
+                dot={false}
+                activeDot={{ r: 6 }}
+              />
+            </LineChart>
+          </ResponsiveContainer>
         </div>
       </div>
-      <div className="chart-wrapper">
-        <ResponsiveContainer width="100%" height={400}>
-          <LineChart
-            data={chartData}
-            margin={{
-              top: 20,
-              right: 30,
-              left: 20,
-              bottom: 10,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis 
-              dataKey="date"
-              tick={{ fontSize: 12 }}
-              interval={14}
-            />
-            <YAxis
-              tickFormatter={formatKRW}
-              tick={{ fontSize: 12 }}
-              domain={['auto', 'auto']}
-            />
-            <Tooltip content={<CustomTooltip />} />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="price"
-              name={`${cryptoName} Price`}
-              stroke="#2563eb"
-              strokeWidth={2}
-              dot={false}
-              activeDot={{ r: 6 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
       </div>
-    </div>
   );
 };
 
