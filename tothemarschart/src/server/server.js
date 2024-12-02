@@ -91,6 +91,7 @@ app.post("/login", (req, res) => {
           email: result[0].UserEmail,
           username: result[0].Username,
           profileImage: result[0].ProfileImage,
+          favorites: result[0].Favorites
         };
 
         res.json({
@@ -101,6 +102,7 @@ app.post("/login", (req, res) => {
             passwordLength: result[0].Password,
             username: result[0].Username,
             profileImage: result[0].ProfileImage,
+            favorites: result[0].Favorites
           },
         });
 
@@ -141,7 +143,7 @@ app.post("/signUp", (req, res) => {
   }
 
   connection.query(
-    "INSERT INTO User (UserEmail, Username, Password, ProfileImage) VALUES (?, ?, ?, 'https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png')",
+    "INSERT INTO User (UserEmail, Username, Password, ProfileImage, Favorites) VALUES (?, ?, ?, 'https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png', '[]')",
     [email, username, password],
     (err, result) => {
       if (err) {
@@ -318,6 +320,223 @@ app.post("/updateProfileImage", (req, res) => {
         message: "Profile image updated successfully",
         updatedProfileImage: profileImage,
       });
+    }
+  );
+});
+
+app.post("/addFavorite", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({
+      success: false,
+      error: "Not authenticated"
+    });
+  }
+
+  const ticker = String(req.body.ticker);
+  const userEmail = req.session.user.email;
+
+  if (!ticker) {
+    return res.status(400).json({
+      success: false,
+      error: "Ticker is required"
+    });
+  }
+
+  // 현재 사용자의 favorites 조회
+  connection.query(
+    "SELECT Favorites FROM User WHERE UserEmail = ?",
+    [userEmail],
+    (err, result) => {
+      if (err) {
+        console.error("Database Error:", err);
+        return res.status(500).json({
+          success: false,
+          error: "Database error"
+        });
+      }
+
+      // 기존 Favorites 데이터를 배열로 변환
+      let currentFavorites = [];
+      
+      if (result[0].Favorites) {
+        // 문자열을 배열로 변환하는 함수
+        const normalizeToArray = (data) => {
+          if (Array.isArray(data)) {
+            // 재귀적으로 모든 중첩 배열과 요소를 평탄화
+            return data.reduce((acc, item) => {
+              if (Array.isArray(item)) {
+                return [...acc, ...normalizeToArray(item)];
+              }
+              return [...acc, item];
+            }, []);
+          }
+          return [data];
+        };
+
+        try {
+          let parsedData;
+          // JSON 파싱 시도
+          try {
+            parsedData = JSON.parse(result[0].Favorites);
+          } catch {
+            parsedData = result[0].Favorites;
+          }
+          
+          // 데이터 정규화
+          currentFavorites = normalizeToArray(parsedData);
+          
+          // 빈 문자열 제거
+          currentFavorites = currentFavorites.filter(item => item && item !== "");
+          
+          // 중복 제거
+          currentFavorites = [...new Set(currentFavorites)];
+        } catch (error) {
+          console.error("Error processing favorites:", error);
+          currentFavorites = [];
+        }
+      }
+
+      // 새로운 ticker가 없으면 추가
+      if (!currentFavorites.includes(ticker)) {
+        currentFavorites.push(ticker);
+      }
+
+      // 배열을 JSON 문자열로 변환
+      const favoritesJson = JSON.stringify(currentFavorites);
+
+      // DB 업데이트
+      connection.query(
+        "UPDATE User SET Favorites = ? WHERE UserEmail = ?",
+        [favoritesJson, userEmail],
+        (updateErr) => {
+          if (updateErr) {
+            console.error("Update Error:", updateErr);
+            return res.status(500).json({
+              success: false,
+              error: "Error updating favorites"
+            });
+          }
+
+          // 세션 업데이트
+          req.session.user = {
+            ...req.session.user,
+            favorites: currentFavorites
+          };
+
+          res.json({
+            success: true,
+            message: "Added to favorites successfully",
+            favorites: currentFavorites
+          });
+        }
+      );
+    }
+  );
+});
+
+app.post("/deleteFavorite", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({
+      success: false,
+      error: "Not authenticated"
+    });
+  }
+
+  const ticker = String(req.body.ticker);
+  const userEmail = req.session.user.email;
+
+  if (!ticker) {
+    return res.status(400).json({
+      success: false,
+      error: "Ticker is required"
+    });
+  }
+
+  // 현재 사용자의 favorites 조회
+  connection.query(
+    "SELECT Favorites FROM User WHERE UserEmail = ?",
+    [userEmail],
+    (err, result) => {
+      if (err) {
+        console.error("Database Error:", err);
+        return res.status(500).json({
+          success: false,
+          error: "Database error"
+        });
+      }
+
+      let currentFavorites = [];
+      
+      if (result[0].Favorites) {
+        // 문자열을 배열로 변환하는 함수
+        const normalizeToArray = (data) => {
+          if (Array.isArray(data)) {
+            // 재귀적으로 모든 중첩 배열과 요소를 평탄화
+            return data.reduce((acc, item) => {
+              if (Array.isArray(item)) {
+                return [...acc, ...normalizeToArray(item)];
+              }
+              return [...acc, item];
+            }, []);
+          }
+          return [data];
+        };
+
+        try {
+          let parsedData;
+          // JSON 파싱 시도
+          try {
+            parsedData = JSON.parse(result[0].Favorites);
+          } catch {
+            parsedData = result[0].Favorites;
+          }
+          
+          // 데이터 정규화
+          currentFavorites = normalizeToArray(parsedData);
+          
+          // 빈 문자열 제거
+          currentFavorites = currentFavorites.filter(item => item && item !== "");
+          
+          // 중복 제거
+          currentFavorites = [...new Set(currentFavorites)];
+        } catch (error) {
+          console.error("Error processing favorites:", error);
+          currentFavorites = [];
+        }
+      }
+
+      // ticker 제거
+      const updatedFavorites = currentFavorites.filter(fav => fav !== ticker);
+
+      // 배열을 JSON 문자열로 변환
+      const favoritesJson = JSON.stringify(updatedFavorites);
+
+      // DB 업데이트
+      connection.query(
+        "UPDATE User SET Favorites = ? WHERE UserEmail = ?",
+        [favoritesJson, userEmail],
+        (updateErr) => {
+          if (updateErr) {
+            console.error("Update Error:", updateErr);
+            return res.status(500).json({
+              success: false,
+              error: "Error updating favorites"
+            });
+          }
+
+          // 세션 업데이트
+          req.session.user = {
+            ...req.session.user,
+            favorites: updatedFavorites
+          };
+
+          res.json({
+            success: true,
+            message: "Removed from favorites successfully",
+            favorites: updatedFavorites
+          });
+        }
+      );
     }
   );
 });

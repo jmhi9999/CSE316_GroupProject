@@ -6,7 +6,8 @@ import {
   updateUsername,
   updateProfileImage,
   setUser as setReduxUser,
-  logout  as reduxLogout
+  logout  as reduxLogout,
+  updateFavorites
 } from "../../redux/userSlice";
 import { CLOUDINARY_CONFIG } from "../../config/cloudinary.js";
 import { useAuth } from "../../session/AuthContext";
@@ -30,6 +31,8 @@ const Modal = ({ isOpen, onClose, title, children }) => {
 };
 
 function MyPage() {
+  axios.defaults.baseURL = "http://localhost:3001";
+  axios.defaults.withCredentials = true;
   const [openModal, setOpenModal] = useState(null);
   const [username, setUsername] = useState("");
   const [oldPassword, setOldPassword] = useState("");
@@ -40,7 +43,7 @@ function MyPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user: authUser, checkAuth, logout: sessionLogout } = useAuth();
-  axios.defaults.baseURL = "http://localhost:3001";
+  
 
   const reduxEmail = useSelector((state) => state.user.email);
   const reduxUsername = useSelector((state) => state.user.username);
@@ -264,6 +267,60 @@ function MyPage() {
     }
   } 
 
+  const handleAddFavorite = async (ticker) => {
+    try {
+      console.log('Adding ticker:', ticker); // 디버깅용
+  
+      // 먼저 인증 상태 확인
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        navigate("/login");
+        return;
+      }
+  
+      const response = await axios.post("/addFavorite", { ticker });
+  
+      if (response.data.success) {
+        dispatch(updateFavorites(response.data.favorites));
+        alert("Added to favorites successfully!");
+      }
+    } catch (error) {
+      console.error("Error adding to favorites:", error);
+      if (error.response?.status === 401) {
+        navigate("/login");
+      } else {
+        alert(error.response?.data?.message || "Error adding to favorites");
+      }
+    }
+  };
+  
+  const handleDeleteFavorite = async (ticker) => {
+    try {
+      console.log('Deleting ticker:', ticker); // 디버깅용
+  
+      // 먼저 인증 상태 확인
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        navigate("/login");
+        return;
+      }
+  
+      const response = await axios.post("/deleteFavorite", { ticker });
+  
+      if (response.data.success) {
+        dispatch(updateFavorites(response.data.favorites));
+        alert("Deleted from favorites!");
+      }
+    } catch (error) {
+      console.error("Error removing from favorites:", error);
+      if (error.response?.status === 401) {
+        navigate("/login");
+      } else {
+        alert(error.response?.data?.message || "Error removing from favorites");
+      }
+    }
+  };
+
   if (!authUser) {
     navigate("/login");
     return null;
@@ -316,7 +373,15 @@ function MyPage() {
             />
           </button>
 
-          <button className="help-button">
+          <button className="help-button" onClick={() => handleAddFavorite("NVDA")}>
+            <img
+              src="resources/7.MyPage/clickHereIfYouHaveAnyQuestions.png"
+              alt="Click here if you have any questions"
+              className="help-image"
+            />
+          </button>
+
+          <button className="help-button" onClick={() => handleDeleteFavorite("NVDA")}>
             <img
               src="resources/7.MyPage/clickHereIfYouHaveAnyQuestions.png"
               alt="Click here if you have any questions"

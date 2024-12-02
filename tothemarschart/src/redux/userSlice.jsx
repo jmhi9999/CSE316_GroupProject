@@ -7,7 +7,8 @@ const userSlice = createSlice({
     username: null,
     passwordLength: 0,
     profileImage: "https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png",
-    isLoggedIn: false
+    isLoggedIn: false,
+    favorites: []
   },
   reducers: {
     setUser: (state, action) => {
@@ -23,6 +24,9 @@ const userSlice = createSlice({
     updateProfileImage: (state, action) => {
       state.profileImage = action.payload;
     },
+    updateFavorites: (state, action) => {
+      state.favorites = action.payload;
+    },
     logout: (state) => {
       state.email = null;
       state.username = null;
@@ -33,5 +37,5 @@ const userSlice = createSlice({
   }
 });
 
-export const { setUser, updateUsername, updateProfileImage, passwordLength, logout } = userSlice.actions;
+export const { setUser, updateUsername, updateProfileImage, updateFavorites, passwordLength, logout } = userSlice.actions;
 export default userSlice.reducer;
