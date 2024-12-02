@@ -33,6 +33,7 @@ const userSlice = createSlice({
       state.profileImage =  "https://res.cloudinary.com/dwp2p4j4c/image/upload/v1699578960/defaultProfile.png";
       state.passwordLength = 0;
       state.isLoggedIn = false;
+      state.favorites = [];
     }
   }
 });
