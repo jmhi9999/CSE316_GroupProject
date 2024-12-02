@@ -115,7 +115,7 @@ const Trending = () => {
                       <span className="ticker-name">{ticker.name}</span>
                       <span className="ticker-description">{ticker.description}</span>
                     </div>
-                  <div style={{ flex: '1', textAlign: 'center', padding: 'auto', margin:'auto' }}>{Number(ticker.acc_trade_volume).toLocaleString()} Transaction</div>
+                  <div style={{ flex: '1', textAlign: 'center', paddingLeft: '20px', margin:'auto' }}>{Number(ticker.acc_trade_volume).toLocaleString()} Transaction</div>
                   </div>
                   <div className="ticker-right">
                     {Number(ticker.trade_price).toLocaleString()}
