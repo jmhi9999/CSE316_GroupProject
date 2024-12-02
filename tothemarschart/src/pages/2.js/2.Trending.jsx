@@ -15,20 +15,20 @@ const Trending = () => {
         const response = await fetch(`https://api.upbit.com/v1/ticker?markets=${markets}`);
         const data = await response.json();
         
-        const formattedData = data.map((item) => {
-          const symbol = item.market.split('-')[1];
-          return {
-            name: `${CRYPTO_NAMES[symbol] || symbol}`,
-            description: `${symbol}`,
-            value: `${item.signed_change_price > 0 ? '+' : ''}${item.signed_change_price.toFixed(2)}`,
-            percentage: `(${(item.signed_change_rate * 100).toFixed(2)}%)`,
-            icon: `https://static.upbit.com/logos/${symbol}.png`,
-            trade_price: item.trade_price,
-            acc_trade_volume: item.acc_trade_volume,
-            signed_change_rate: item.signed_change_rate,
-            isPositive: item.signed_change_rate > 0
-          };
-        });
+      const formattedData = data.map((item) => {
+        const symbol = item.market.split('-')[1];
+        return {
+          name: `${CRYPTO_NAMES[symbol] || symbol}`,
+          description: `${symbol}`,
+          trade_price: item.trade_price,
+          value: item.signed_change_price,
+          percentage: (item.signed_change_rate * 100).toFixed(2),
+          icon: `https://static.upbit.com/logos/${symbol}.png`,
+          acc_trade_volume: item.acc_trade_volume.toFixed(0),
+          signed_change_rate: item.signed_change_rate,
+          isPositive: item.signed_change_rate > 0
+        };
+      });
         
         setTickers(formattedData);
       } catch (error) {
@@ -37,7 +37,7 @@ const Trending = () => {
     };
 
     fetchTickers();
-    const interval = setInterval(fetchTickers, 5000);
+    const interval = setInterval(fetchTickers, 20000);
     return () => clearInterval(interval);
   }, [CRYPTO_NAMES, markets]); // 의존성 배열에 추가
 
@@ -77,12 +77,13 @@ const Trending = () => {
                     </div>
                   </div>
                   <div className="ticker-right">
-                  {Number(ticker.trade_price).toLocaleString()}<span style={{paddingRight:"20px"}}>KRW</span>
+                    {Number(ticker.trade_price).toLocaleString()}
+                    <span style={{paddingRight:"20px"}}>KRW</span>
                     <span className={`ticker-value ${ticker.isPositive ? 'positive' : 'negative'}`}>
-                     {ticker.value}
+                      {ticker.value > 0 ? '+' : ''}{Number(ticker.value).toLocaleString()} <span>KRW</span>
                     </span>
                     <span className={ticker.isPositive ? 'positive' : 'negative'}>
-                      {ticker.percentage}
+                      ({ticker.percentage}%)
                     </span>
                   </div>
                 </div>
@@ -114,13 +115,13 @@ const Trending = () => {
                       <span className="ticker-name">{ticker.name}</span>
                       <span className="ticker-description">{ticker.description}</span>
                     </div>
+                  <div style={{ flex: '1', textAlign: 'center', padding: 'auto', margin:'auto' }}>{Number(ticker.acc_trade_volume).toLocaleString()} Transaction</div>
                   </div>
                   <div className="ticker-right">
-                    <span className={`ticker-value ${ticker.isPositive ? 'positive' : 'negative'}`}>
-                      {ticker.value}
-                    </span>
+                    {Number(ticker.trade_price).toLocaleString()}
+                    <span>KRW</span>
                     <span className={ticker.isPositive ? 'positive' : 'negative'}>
-                      {ticker.percentage}
+                      ({ticker.percentage}%)
                     </span>
                   </div>
                 </div>

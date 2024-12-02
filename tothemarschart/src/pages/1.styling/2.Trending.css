@@ -25,6 +25,7 @@
     gap: 10px;
     padding: 20px;
     max-width: 770px;
+    min-width: 550px;
     margin: 0 auto;
     margin-top: 50px;
     animation: slideInFromBottom 0.8s ease-out forwards;
