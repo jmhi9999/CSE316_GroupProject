@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../session/AuthContext";
 import { useSelector } from "react-redux";
 import Home from "./1.Main";
@@ -10,6 +10,37 @@ import Login from "./5.Login.jsx";
 import SignUp from "./6.SignUp.jsx";
 import MyPage from "./7.MyPage.jsx";
 import "../1.styling/0.Navbar.css";
+
+const SearchForm = () => {
+  const navigate = useNavigate();
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const searchValue = e.target.elements.search.value.toUpperCase();
+    if (searchValue) {
+      navigate(`/search/KRW-${searchValue}`);
+    }
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="search-form">
+      <input 
+        name="search"
+        type="text" 
+        placeholder="Search (e.g. BTC, ETH)" 
+        className="search-field" 
+        style={{display: "flex", width:'250px'}}
+      />
+      <button type="submit" className="search-button">
+        <img 
+          src="/resources/0.Navbar/Vector.png" 
+          alt="Search" 
+          style={{display: "flex", width:"15px"}}
+        />
+      </button>
+    </form>
+  );
+};
 
 const Navbar = () => {
   const { user: authUser } = useAuth();
@@ -37,19 +68,7 @@ const Navbar = () => {
               <Link to="/myfavorite">My Favorite</Link>
             </li>
             <li className="navbar-item search-bar">
-              <input 
-                type="text" 
-                placeholder="Search" 
-                className="search-field" 
-                style={{display: "flex", width:'250px'}}
-              />
-              <Link to="/search" className="search-icon">
-                <img 
-                  src="/resources/0.Navbar/Vector.png" 
-                  alt="Home" 
-                  style={{display: "flex", width:"15px"}}
-                />
-              </Link>
+              <SearchForm />
             </li>
             {!username ? (
               <li className="navbar-item">
@@ -73,6 +92,7 @@ const Navbar = () => {
           <Route path="/trending" element={<Trending />} />
           <Route path="/myfavorite" element={<MyFavorite />} />
           <Route path="/search" element={<Search />} />
+          <Route path="/search/:market" element={<Search />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/mypage" element={<MyPage />} />

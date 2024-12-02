@@ -1,7 +1,7 @@
 import React from "react";
 
-const Trending = () => {
+const MyFavorite = () => {
   return <h1>MY Favorite</h1>;
 };
 
-export default Trending;
+export default MyFavorite;
