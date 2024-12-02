@@ -1,0 +1,117 @@
+.favorites-container {
+    max-width: 1250px;
+    margin: 0 auto;
+    background-image: url('../../../public/resources/4.MyFavorite/favorite-container.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    min-height: 800px;
+    padding: 20px;
+    display: flex;
+    justify-content: flex-end;
+  }
+  
+  .favorites-card {
+    width: 70%;
+    margin-right: 1vw;
+    margin-top: 5vw;
+    height: fit-content;
+  }
+
+  .favorites-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1vw;
+    max-height: 400px;
+    overflow-y: auto;
+    padding-right: 8px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  }
+  
+  
+  .favorites-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 16px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+  }
+  
+  .favorites-item:hover {
+    transform: translateY(-2px);
+    background: rgba(255, 255, 255, 0.1);
+  }
+  
+  .icon-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+  }
+  
+  .crypto-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 4px;
+  }
+  
+  .symbol-text {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 5vw;
+  }
+  
+  .right-container {
+    flex-direction: column;
+  }
+  
+  .current-price1 {
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 20px;
+    margin-left: 5vw;
+  }
+  
+  .change-rate {
+    font-weight: 600;
+    font-size: 20px;
+    padding: 4px 8px;
+    border-radius: 6px;
+  }
+  
+  .change-rate.positive {
+    background: rgba(16, 185, 129, 0.2);
+    color: #10B981;
+  }
+  
+  .change-rate.negative {
+    background: rgba(239, 68, 68, 0.2);
+    color: #EF4444;
+  }
+  
+  .favorite-star {
+    cursor: pointer;
+    font-size: 24px;
+    transition: transform 0.2s ease;
+    user-select: none;
+  }
+  
+  .favorite-star:hover {
+    transform: scale(1.2);
+  }
+  
+  .favorite-star.favorited {
+    color: #FFD700;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+  }
+  
+  .favorite-star:not(.favorited) {
+    color: rgba(255, 255, 255, 0.3);
+  }
+  
