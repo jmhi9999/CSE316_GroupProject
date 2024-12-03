@@ -36,7 +36,6 @@ const Search = () => {
     fetchFavorites();
   }, [dispatch]);
 
-  // URL에서 market 코드 추출 - 수정
   const getMarketFromPath = () => {
     const path = location.pathname;
     if (path === '/search') return 'KRW-BTC';
@@ -105,7 +104,7 @@ const Search = () => {
     }
   };
 
-  // 코인 이름 가져오기 - 수정
+
   const getCryptoName = (market) => {
     const symbol = market.includes('-') ? market.split('-')[1] : market;
     switch(symbol) {
@@ -184,7 +183,6 @@ const Search = () => {
     );
   }
 
-  // 가격 변동률 계산
   const calculatePriceChange = () => {
     if (chartData.length < 2) return 0;
     const latestPrice = chartData[chartData.length - 1]?.price;

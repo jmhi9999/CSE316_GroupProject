@@ -8,9 +8,8 @@
   padding: 20px;
   display: flex;
   justify-content: flex-end;
-  /* 컨테이너 높이 고정 */
-  height: 100vh; /* 또는 원하는 특정 높이값 */
-  position: relative; /* 포지셔닝 컨텍스트 설정 */
+  height: 100vh; 
+  position: relative; 
   animation: slideInFromBottom 0.8s ease-out forwards;
   margin-top: 3%;
 }
@@ -19,8 +18,7 @@
   width: 70%;
   margin-top: 20px;
   margin-right: 10px;
-  /* 카드의 높이도 제한 */
-  height: calc(100% - 40px); /* 상하 패딩 고려 */
+  height: calc(100% - 40px);
   display: flex;
   flex-direction: column;
 }
@@ -32,7 +30,7 @@
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-  min-height: 40vh; /* 뷰포트 높이의 80% 제한 */
+  min-height: 40vh; 
   max-height: 65vh;
   height: 37vw;
 }
