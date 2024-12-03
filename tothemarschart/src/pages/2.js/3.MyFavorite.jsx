@@ -14,11 +14,11 @@ const MyFavorites = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   
-  // user 객체 전체를 선택하는 대신 각각의 필요한 값을 개별적으로 선택
+  // get const with userselector
   const userFavorites = useSelector((state) => state.user.favorites);
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
 
-  // 컴포넌트 마운트 시 로그인 상태와 favorites 확인
+  // Check the my favorite list with server
   useEffect(() => {
     const checkAuthAndFavorites = async () => {
       try {

@@ -40,7 +40,7 @@ const Search = () => {
     const path = location.pathname;
     if (path === '/search') return 'KRW-BTC';
     const market = path.split('/search/')[1];
-    return market || 'KRW-BTC'; // 기본값 설정
+    return market || 'KRW-BTC';
   };
 
   const market = getMarketFromPath();

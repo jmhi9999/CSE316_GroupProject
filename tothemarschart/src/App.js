@@ -1,4 +1,3 @@
-// App.js
 import React from "react";
 import Navbar from "./pages/2.js/0.Navbar.js";
 import "./App.css";

@@ -1,5 +1,3 @@
-// src/constants/cryptoConstants.js
-
 export const CRYPTOS = {
     'BTC': 'Bitcoin',
     'ETH': 'Ethereum',
