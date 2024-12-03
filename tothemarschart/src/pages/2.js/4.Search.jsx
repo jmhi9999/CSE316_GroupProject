@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
@@ -118,37 +118,37 @@ const Search = () => {
     }
   };
 
-  useEffect(() => {
-    const fetchCryptoData = async () => {
-      setIsLoading(true);
-      try {
-        const response = await fetch(`https://api.upbit.com/v1/candles/days?market=${market}&count=90`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const data = await response.json();
-        
-        const formattedData = data
-          .map(item => ({
-            date: new Date(item.candle_date_time_kst).toLocaleDateString(),
-            price: item.trade_price,
-            change: item.change_price
-          }))
-          .reverse();
-
-        setChartData(formattedData);
-        setError(null);
-      } catch (error) {
-        console.error('Error:', error);
-        setError('Failed to load data. Please check if the cryptocurrency code is correct.');
-        setChartData([]);
-      } finally {
-        setIsLoading(false);
+  const fetchCryptoData = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const response = await fetch(`https://api.upbit.com/v1/candles/days?market=${market}&count=90`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch data');
       }
-    };
-
-    fetchCryptoData();
+      const data = await response.json();
+      
+      const formattedData = data
+        .map(item => ({
+          date: new Date(item.candle_date_time_kst).toLocaleDateString(),
+          price: item.trade_price,
+          change: item.change_price
+        }))
+        .reverse();
+  
+      setChartData(formattedData);
+      setError(null);
+    } catch (error) {
+      console.error('Error:', error);
+      setError('Failed to load data. Please check if the cryptocurrency code is correct.');
+      setChartData([]);
+    } finally {
+      setIsLoading(false);
+    }
   }, [market]);
+  
+  useEffect(() => {
+    fetchCryptoData();
+  }, [fetchCryptoData]);
 
   const formatKRW = (value) => {
     if (!value) return '₩0';
@@ -231,7 +231,7 @@ const Search = () => {
                 {priceChange}%
               </div>
             </div>
-            <span className="refresh-icon">⟳</span>
+            <span className="refresh-icon" onClick={() => fetchCryptoData()}>⟳</span>
           </div>
         </div>
         <div className="chart-wrapper">
