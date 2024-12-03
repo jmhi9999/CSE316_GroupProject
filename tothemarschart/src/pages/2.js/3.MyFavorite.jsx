@@ -13,10 +13,32 @@ const MyFavorites = () => {
   
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userFavorites = useSelector((state) => state.user.favorites ?? []);
+  
+  // user 객체 전체를 선택하는 대신 각각의 필요한 값을 개별적으로 선택
+  const userFavorites = useSelector((state) => state.user.favorites);
+  const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
+
+  // 컴포넌트 마운트 시 로그인 상태와 favorites 확인
+  useEffect(() => {
+    const checkAuthAndFavorites = async () => {
+      try {
+        const response = await axios.get('/check-auth');
+        if (response.data.sessionExists && response.data.sessionUser.favorites) {
+          dispatch(updateFavorites(response.data.sessionUser.favorites));
+        }
+      } catch (error) {
+        console.error('Error checking auth status:', error);
+        setError('Failed to load favorites');
+      }
+    };
+
+    if (!userFavorites || userFavorites.length === 0) {
+      checkAuthAndFavorites();
+    }
+  }, [dispatch]);
 
   const fetchTickers = useCallback(async () => {
-    if (!userFavorites.length) {
+    if (!userFavorites || userFavorites.length === 0) {
       setTickers([]);
       setIsLoading(false);
       return;
@@ -39,24 +61,24 @@ const MyFavorites = () => {
   }, [userFavorites]);
 
   useEffect(() => {
-    fetchTickers();
-    const interval = setInterval(fetchTickers, 200000);
-    return () => clearInterval(interval);
-  }, [fetchTickers]);
+    if (userFavorites && userFavorites.length > 0) {
+      fetchTickers();
+      const interval = setInterval(fetchTickers, 200000);
+      return () => clearInterval(interval);
+    }
+  }, [fetchTickers, userFavorites]);
 
   const handleToggleFavorite = async (market) => {
-    try {
-      const authResponse = await axios.get("/check-auth");
-      if (!authResponse.data.isAuthenticated) {
-        alert("Please login to modify your favorites");
-        navigate("/login");
-        return;
-      }
+    if (!isLoggedIn) {
+      alert("Please login to modify your favorites");
+      navigate("/login");
+      return;
+    }
 
-      const isFavorite = userFavorites.includes(market);
-      const endpoint = isFavorite ? "/deleteFavorite" : "/addFavorite";
-      
+    try {
+      const endpoint = userFavorites.includes(market) ? "/deleteFavorite" : "/addFavorite";
       const response = await axios.post(endpoint, { ticker: market });
+      
       if (response.data.success) {
         dispatch(updateFavorites(response.data.favorites));
       }
@@ -80,55 +102,55 @@ const MyFavorites = () => {
 
   return (
     <div>
-      <img src = "/resources/4.Search/back-ground.png" alt = "back" style = {{width:'100', position:'absolute', zIndex:'-1', animation:"slideInFromBottom 0.4s ease-out forwards"}}/>
-    <div className="favorites-container">
-      <div className="favorites-card">
-        <div className="favorites-list">
-          {tickers.length === 0 ? (
-            <div className="no-favorites">No favorites added yet</div>
-          ) : (
-            tickers.map(ticker => {
-              const symbol = ticker.market.split('-')[1];
-              const changeRate = (ticker.signed_change_rate * 100).toFixed(2);
-              const isPositive = ticker.signed_change_rate > 0;
-              const isFavorite = userFavorites.includes(ticker.market);
-              const cryptoInfo = CRYPTOS[symbol] || { name: symbol };
+      <img src="/resources/4.Search/back-ground.png" alt="back" style={{width:'100', position:'absolute', zIndex:'-1', animation:"slideInFromBottom 0.4s ease-out forwards"}}/>
+      <div className="favorites-container">
+        <div className="favorites-card">
+          <div className="favorites-list">
+            {(!userFavorites || userFavorites.length === 0) ? (
+              <div className="no-favorites">No favorites added yet</div>
+            ) : (
+              tickers.map(ticker => {
+                const symbol = ticker.market.split('-')[1];
+                const changeRate = (ticker.signed_change_rate * 100).toFixed(2);
+                const isPositive = ticker.signed_change_rate > 0;
+                const isFavorite = userFavorites.includes(ticker.market);
+                const cryptoInfo = CRYPTOS[symbol] || { name: symbol };
 
-              return (
-                <div key={ticker.market} className="favorites-item">
-                  <span 
-                    className={`favorite-star ${isFavorite ? 'favorited' : ''}`}
-                    onClick={() => handleToggleFavorite(ticker.market)}
-                  >
-                    {isFavorite ? '★' : '☆'}
-                  </span>
-                  <div className="icon-container" onClick={() => navigate(`/search/KRW-${symbol}`)}>
-                    <img
-                      src={`https://static.upbit.com/logos/${symbol}.png`}
-                      alt={symbol}
-                      className="crypto-icon"
-                      onError={(e) => {
-                        e.target.onerror = null;
-                        e.target.src = '/default-crypto-icon.png';
-                      }}
-                    />
-                    <span className="symbol-text">{`${cryptoInfo}`}</span>
-                  </div>
-                  <div>
-                    <span className="current-price1">
-                      {Number(ticker.trade_price).toLocaleString()} KRW
+                return (
+                  <div key={ticker.market} className="favorites-item">
+                    <span 
+                      className={`favorite-star ${isFavorite ? 'favorited' : ''}`}
+                      onClick={() => handleToggleFavorite(ticker.market)}
+                    >
+                      {isFavorite ? '★' : '☆'}
                     </span>
-                    <span className={`change-rate ${isPositive ? 'positive' : 'negative'}`}>
-                      {isPositive ? '+' : ''}{changeRate}%
-                    </span>
+                    <div className="icon-container" onClick={() => navigate(`/search/KRW-${symbol}`)}>
+                      <img
+                        src={`https://static.upbit.com/logos/${symbol}.png`}
+                        alt={symbol}
+                        className="crypto-icon"
+                        onError={(e) => {
+                          e.target.onerror = null;
+                          e.target.src = '/default-crypto-icon.png';
+                        }}
+                      />
+                      <span className="symbol-text">{`${cryptoInfo}`}</span>
+                    </div>
+                    <div>
+                      <span className="current-price1">
+                        {Number(ticker.trade_price).toLocaleString()} KRW
+                      </span>
+                      <span className={`change-rate ${isPositive ? 'positive' : 'negative'}`}>
+                        {isPositive ? '+' : ''}{changeRate}%
+                      </span>
+                    </div>
                   </div>
-                </div>
-              );
-            })
-          )}
+                );
+              })
+            )}
+          </div>
         </div>
       </div>
-    </div>
     </div>
   );
 };

@@ -17,6 +17,7 @@ const userSlice = createSlice({
       state.profileImage = action.payload.profileImage;
       state.passwordLength = action.payload.passwordLength;
       state.isLoggedIn = true;
+      state.favorites = action.payload.favorites;
     },
     updateUsername: (state, action) => {
       state.username = action.payload;
