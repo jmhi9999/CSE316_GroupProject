@@ -11,6 +11,8 @@
   /* 컨테이너 높이 고정 */
   height: 100vh; /* 또는 원하는 특정 높이값 */
   position: relative; /* 포지셔닝 컨텍스트 설정 */
+  animation: slideInFromBottom 0.8s ease-out forwards;
+  margin-top: 3%;
 }
 
 .favorites-card {

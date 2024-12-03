@@ -79,6 +79,8 @@ const MyFavorites = () => {
   }
 
   return (
+    <div>
+      <img src = "/resources/4.Search/back-ground.png" alt = "back" style = {{width:'100', position:'absolute', zIndex:'-1', animation:"slideInFromBottom 0.4s ease-out forwards"}}/>
     <div className="favorites-container">
       <div className="favorites-card">
         <div className="favorites-list">
@@ -126,6 +128,7 @@ const MyFavorites = () => {
           )}
         </div>
       </div>
+    </div>
     </div>
   );
 };
