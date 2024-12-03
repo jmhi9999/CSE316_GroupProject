@@ -19,7 +19,6 @@ const Search = () => {
   // Get user's favorites from Redux store
   const userFavorites = useSelector((state) => state.user.favorites ?? []);
 
-  // 페이지 로드 시 사용자의 favorites 정보 가져오기
   useEffect(() => {
     const fetchFavorites = async () => {
       try {

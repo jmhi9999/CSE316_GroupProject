@@ -68,6 +68,24 @@ const MyFavorites = () => {
     }
   }, [fetchTickers, userFavorites]);
 
+  useEffect(() => {
+    const fetchFavorites = async () => {
+      try {
+        const response = await axios.get("/check-auth");
+        if (response.data.isAuthenticated) {
+          const user = response.data.user;
+          if (user && user.favorites) {
+            dispatch(updateFavorites(user.favorites));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching favorites:", error);
+      }
+    };
+    fetchFavorites();
+    fetchTickers();
+  }, [dispatch]);
+
   const handleToggleFavorite = async (market) => {
     if (!isLoggedIn) {
       alert("Please login to modify your favorites");
@@ -76,11 +94,20 @@ const MyFavorites = () => {
     }
 
     try {
+      // First check authentication status
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        alert("Please Login to add this crypto to your favorites");
+        navigate("/login");
+        return;
+      }
+
       const endpoint = userFavorites.includes(market) ? "/deleteFavorite" : "/addFavorite";
       const response = await axios.post(endpoint, { ticker: market });
       
       if (response.data.success) {
         dispatch(updateFavorites(response.data.favorites));
+        alert("Deleted from favorites!")
       }
     } catch (error) {
       console.error("Error modifying favorites:", error);
