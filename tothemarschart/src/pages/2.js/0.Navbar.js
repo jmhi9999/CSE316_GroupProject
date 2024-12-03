@@ -1,15 +1,10 @@
+// Navbar.js
 import React from "react";
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../session/AuthContext.jsx";
 import { useSelector } from "react-redux";
-import Home from "./1.Main.jsx";
-import Trending from "./2.Trending.jsx";
-import MyFavorite from "./3.MyFavorite.jsx";
-import Search from "./4.Search.jsx";
-import Login from "./5.Login.jsx";
-import SignUp from "./6.SignUp.jsx";
-import MyPage from "./7.MyPage.jsx";
 import "../1.styling/0.Navbar.css";
+import axios from 'axios';
 
 const SearchForm = () => {
   const navigate = useNavigate();
@@ -44,60 +39,63 @@ const SearchForm = () => {
 };
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { user: authUser } = useAuth();
   const reduxUsername = useSelector((state) => state.user.username);
   const username = authUser?.username || reduxUsername;
 
-  return (
-    <Router>
-      <div>
-        <nav className="navbar">
-          <ul className="navbar-item" id="home-icon">
-            <Link to="/">
-              <img 
-                src="/resources/0.Navbar/Home.png" 
-                alt="Home" 
-                style={{display: "flex", width:'300px', margin:'auto', padding:'auto', marginBottom:'20px'}}
-              />
-            </Link>
-          </ul>
-          <ul className="navbar-list">
-            <li className="navbar-item">
-              <Link to="/trending">Trending</Link>
-            </li>
-            <li className="navbar-item">
-              <Link to="/myfavorite">My Favorite</Link>
-            </li>
-            <SearchForm />
-            {!username ? (
-              <li className="navbar-item">
-                <Link to="/login" id="login">Login</Link>
-              </li>
-            ) : (
-              <>
-                <li className="navbar-item">
-                  <Link to="/mypage" id="mypage">My Page</Link>
-                </li>
-                <li className="navbar-item">
-                  <span style={{color: '#333'}}>Hi, {username}</span>
-                </li>
-              </>
-            )}
-          </ul>
-        </nav>
+  const check = async() => {
+    try {
+      const authResponse = await axios.get("/check-auth");
+      if (!authResponse.data.isAuthenticated) {
+        alert("Please login to modify your favorites");
+        navigate("/login");
+        return;
+      }
+      navigate("/myfavorite");
+    } catch (error) {
+      console.error("Auth check failed:", error);
+      navigate("/login");
+    }
+  };
 
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/trending" element={<Trending />} />
-          <Route path="/myfavorite" element={<MyFavorite />} />
-          <Route path="/search" element={<Search />} />
-          <Route path="/search/:market" element={<Search />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/mypage" element={<MyPage />} />
-        </Routes>
-      </div>
-    </Router>
+  return (
+    <div>
+      <nav className="navbar">
+        <ul className="navbar-item" id="home-icon">
+          <Link to="/">
+            <img 
+              src="/resources/0.Navbar/Home.png" 
+              alt="Home" 
+              style={{display: "flex", width:'300px', margin:'auto', padding:'auto', marginBottom:'20px'}}
+            />
+          </Link>
+        </ul>
+        <ul className="navbar-list">
+          <li className="navbar-item">
+            <Link to="/trending">Trending</Link>
+          </li>
+          <li className="navbar-item">
+            <Link to="/login" onClick={check}>My Favorite</Link>
+          </li>
+          <SearchForm />
+          {!username ? (
+            <li className="navbar-item">
+              <Link to="/login" id="login">Login</Link>
+            </li>
+          ) : (
+            <>
+              <li className="navbar-item">
+                <Link to="/mypage" id="mypage">My Page</Link>
+              </li>
+              <li className="navbar-item">
+                <span style={{color: '#333'}}>Hi, {username}</span>
+              </li>
+            </>
+          )}
+        </ul>
+      </nav>
+    </div>
   );
 };
 

@@ -1,14 +1,15 @@
 import React, { useState, useEffect, useMemo } from "react";
 import "../1.styling/2.Trending.css";
 import { useNavigate } from 'react-router-dom';
+import { CRYPTOS, MARKETS } from '../../config/cryptoConstants';
 
 const Trending = () => {
   const navigate = useNavigate(); // Navigation function from react-router-dom
   const [tickers, setTickers] = useState([]);
 
-  const CRYPTO_NAMES = useMemo(() => ({ 'BTC': 'Bitcoin', 'ETH': 'Ethereum', 'SOL': 'Solana', 'XRP': 'Ripple', 'DOGE': 'Dogecoin', 'ADA': 'Cardano', 'SHIB': 'Shiba Inu', 'AVAX': 'Avalanche', 'TRX': 'TRON', 'TON': 'Toncoin', 'XLM': 'Stellar', 'DOT': 'Polkadot', 'LINK': 'Chainlink', 'BCH': 'Bitcoin Cash', 'SUI': 'Sui', 'NEAR': 'NEAR Protocol', 'UNI': 'Uniswap', 'HBAR': 'Hedera', 'APT': 'Aptos', 'ETC': 'Ethereum Classic', 'MASK': 'Mask Network', 'SAND': 'The Sandbox', 'ATOM': 'Cosmos', 'IMX': 'Immutable X', 'STX': 'Stacks', 'FLOW': 'Flow', 'GRT': 'The Graph' }), []); // 빈 의존성 배열로 한 번만 생성
-  const markets = useMemo(() => 'KRW-BTC,KRW-ETH,KRW-SOL,KRW-XRP,KRW-DOGE,KRW-ADA,KRW-SHIB,KRW-AVAX,KRW-TRX,KRW-TON,KRW-XLM,KRW-DOT,KRW-LINK,KRW-BCH,KRW-SUI,KRW-NEAR,KRW-UNI,KRW-HBAR,KRW-APT,KRW-ETC,KRW-MASK,KRW-SAND,KRW-ATOM,KRW-IMX,KRW-STX,KRW-FLOW,KRW-GRT', []);
-
+  const CRYPTO_NAMES = CRYPTOS;
+  const markets = MARKETS;
+  
   useEffect(() => {
     const fetchTickers = async () => {
       try {

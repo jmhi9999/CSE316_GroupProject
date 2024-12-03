@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { updateFavorites } from '../../redux/userSlice';
 import "../1.styling/3.MyFavorite.css";
+import { CRYPTOS } from '../../config/cryptoConstants';
 
 const MyFavorites = () => {
   const [tickers, setTickers] = useState([]);
@@ -89,6 +90,7 @@ const MyFavorites = () => {
               const changeRate = (ticker.signed_change_rate * 100).toFixed(2);
               const isPositive = ticker.signed_change_rate > 0;
               const isFavorite = userFavorites.includes(ticker.market);
+              const cryptoInfo = CRYPTOS[symbol] || { name: symbol };
 
               return (
                 <div key={ticker.market} className="favorites-item">
@@ -98,7 +100,7 @@ const MyFavorites = () => {
                   >
                     {isFavorite ? '★' : '☆'}
                   </span>
-                  <div className="icon-container">
+                  <div className="icon-container" onClick={() => navigate(`/search/KRW-${symbol}`)}>
                     <img
                       src={`https://static.upbit.com/logos/${symbol}.png`}
                       alt={symbol}
@@ -108,9 +110,9 @@ const MyFavorites = () => {
                         e.target.src = '/default-crypto-icon.png';
                       }}
                     />
-                    <span className="symbol-text">{symbol}</span>
+                    <span className="symbol-text">{`${cryptoInfo}`}</span>
                   </div>
-                  <div className="right-container">
+                  <div>
                     <span className="current-price1">
                       {Number(ticker.trade_price).toLocaleString()} KRW
                     </span>

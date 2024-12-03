@@ -1,40 +1,46 @@
 .favorites-container {
-    max-width: 1250px;
-    margin: 0 auto;
-    background-image: url('../../../public/resources/4.MyFavorite/favorite-container.png');
-    background-size: contain;
-    background-repeat: no-repeat;
-    min-height: 800px;
-    padding: 20px;
-    display: flex;
-    justify-content: flex-end;
-  }
-  
-  .favorites-card {
-    width: 70%;
-    margin-right: 1vw;
-    margin-top: 5vw;
-    height: fit-content;
-  }
+  max-width: 1250px;
+  margin: 0 auto;
+  background-image: url('../../../public/resources/4.MyFavorite/favorite-container.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  min-width: 800px;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-end;
+  /* 컨테이너 높이 고정 */
+  height: 100vh; /* 또는 원하는 특정 높이값 */
+  position: relative; /* 포지셔닝 컨텍스트 설정 */
+}
 
-  .favorites-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1vw;
-    max-height: 400px;
-    overflow-y: auto;
-    padding-right: 8px;
-    scrollbar-width: thin;
-    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
-  }
-  
-  
+.favorites-card {
+  width: 70%;
+  margin-top: 20px;
+  margin-right: 10px;
+  /* 카드의 높이도 제한 */
+  height: calc(100% - 40px); /* 상하 패딩 고려 */
+  display: flex;
+  flex-direction: column;
+}
+
+.favorites-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  min-height: 40vh; /* 뷰포트 높이의 80% 제한 */
+  max-height: 65vh;
+  height: 37vw;
+}
+
   .favorites-item {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 10px;
     background: rgba(255, 255, 255, 0.05);
-    padding: 16px;
+    padding: 1.2%;
     border-radius: 12px;
     transition: all 0.3s ease;
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -48,7 +54,7 @@
   .icon-container {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 12wv;
     flex: 1;
   }
   
@@ -58,24 +64,28 @@
     border-radius: 50%;
     background: rgba(255, 255, 255, 0.1);
     padding: 4px;
+    margin-left: 3%;
   }
   
   .symbol-text {
     font-weight: 600;
     color: #ffffff;
     font-size: 20px;
-    margin-left: 5vw;
+    margin-left: 3%;
   }
   
-  .right-container {
-    flex-direction: column;
+  .no-favorites{
+    font-weight: 600;
+    color: #ffffff;
+    font-size: 20px;
+    text-align: center;
   }
-  
+
   .current-price1 {
     font-weight: 600;
     color: #ffffff;
     font-size: 20px;
-    margin-left: 5vw;
+    margin-right: 4em;
   }
   
   .change-rate {
@@ -97,9 +107,10 @@
   
   .favorite-star {
     cursor: pointer;
-    font-size: 24px;
+    font-size: 30px;
     transition: transform 0.2s ease;
     user-select: none;
+    padding-left: 2%;
   }
   
   .favorite-star:hover {
