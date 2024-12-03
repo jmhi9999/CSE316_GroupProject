@@ -320,7 +320,7 @@ function MyPage() {
           <button className="help-button">
             <img
               src="resources/7.MyPage/clickHereIfYouHaveAnyQuestions.png"
-              alt="Click here if you have any questions"
+              alt="Developed by SeminBae & Minhyeok Im"
               className="help-image"
             />
           </button>
