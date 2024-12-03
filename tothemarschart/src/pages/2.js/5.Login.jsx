@@ -51,6 +51,7 @@ function Login() {
     }
   };
 
+  // navigate to signup page
   const handleSignUp = () => {
     navigate("/signup")
   };

@@ -49,6 +49,7 @@ function MyPage() {
 
   const userEmail = authUser?.email || reduxEmail;
 
+
   useEffect(() => {
     if (authUser?.profileImage) {
       setCurrentProfileImage(authUser.profileImage);
@@ -76,6 +77,7 @@ function MyPage() {
     }
   };
 
+  // request server to update the username
   const handleUsernameUpdate = async (e) => {
     e.preventDefault();
     if (!username.trim()) {
@@ -131,6 +133,8 @@ function MyPage() {
     }
   };
 
+
+  //request server to update password
   const handlePasswordUpdate = async (e) => {
     e.preventDefault();
 
@@ -179,6 +183,8 @@ function MyPage() {
     }
   };
 
+  // request cloudinary to upload desired photo and 
+  // request the server to change the user profile image url
   const handleProfileImageUpdate = async (e) => {
     e.preventDefault();
     const file = fileInputRef.current.files[0];

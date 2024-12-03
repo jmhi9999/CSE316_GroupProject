@@ -23,12 +23,13 @@ function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+    // if passwords do not match, throw error
     if (formData.password !== formData.passwordCheck) {
       alert("Passwords do not match");
       return;
     }
 
+    // request server to sign the user up, if suceeded, redirect to login page
     try {
       const hashedPassword = hashutil(formData.email, formData.password);
       const response = await axios.post("/signUp", {
