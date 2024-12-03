@@ -27,7 +27,29 @@ export const CRYPTOS = {
     'IMX': 'Immutable X',
     'STX': 'Stacks',
     'FLOW': 'Flow',
-    'GRT': 'The Graph'
+    'GRT': 'The Graph',
+    'ARDR': 'Ardor',
+    'MOC': 'Moss Coin',
+    'ORBS': 'Orbs',
+    'STEEM': 'Steem',
+    'STPT': 'Standard Protocol',
+    'AUCTION': 'Bounce Token',
+    'AERGO': 'Aergo',
+    'MED': 'MediBloc',
+    'HUNT': 'Hunt',
+    'QKC': 'QuarkChain',
+    'KNC': 'Kyber Network Crystal',
+    'PUNDIX': 'Pundi X',
+    'BOUNTY': 'Chain Bounty',
+    'DKA': 'dKargo',
+    'STRIKE': 'Strike',
+    'AHT': 'AhaToken',
+    'FCT2': 'FirmaChain',
+    'META': 'Metadium',
+    'TT': 'ThunderCore',
+    'SBD': 'Steem Dollars',
+    'MBL': 'MovieBloc',
+    'HPO': 'Hippocrat'
 };
 
-export const MARKETS = 'KRW-BTC,KRW-ETH,KRW-SOL,KRW-XRP,KRW-DOGE,KRW-ADA,KRW-SHIB,KRW-AVAX,KRW-TRX,KRW-TON,KRW-XLM,KRW-DOT,KRW-LINK,KRW-BCH,KRW-SUI,KRW-NEAR,KRW-UNI,KRW-HBAR,KRW-APT,KRW-ETC,KRW-MASK,KRW-SAND,KRW-ATOM,KRW-IMX,KRW-STX,KRW-FLOW,KRW-GRT';
+export const MARKETS = 'KRW-BTC,KRW-ETH,KRW-SOL,KRW-XRP,KRW-DOGE,KRW-ADA,KRW-SHIB,KRW-AVAX,KRW-TRX,KRW-TON,KRW-XLM,KRW-DOT,KRW-LINK,KRW-BCH,KRW-SUI,KRW-NEAR,KRW-UNI,KRW-HBAR,KRW-APT,KRW-ETC,KRW-MASK,KRW-SAND,KRW-ATOM,KRW-IMX,KRW-STX,KRW-FLOW,KRW-GRT,KRW-ARDR,KRW-MOC,KRW-ORBS,KRW-STEEM,KRW-STPT,KRW-AUCTION,KRW-AERGO,KRW-MED,KRW-HUNT,KRW-QKC,KRW-KNC,KRW-PUNDIX,KRW-BOUNTY,KRW-DKA,KRW-STRIKE,KRW-AHT,KRW-FCT2,KRW-META,KRW-TT,KRW-SBD,KRW-MBL,KRW-HPO';
